@@ -28,6 +28,7 @@
     "react": "^18",
     "react-dom": "^18",
     "sass": "^1.77.4",
+    "styled-components": "^6.1.11",
     "tailwind-merge": "^2.3.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss-animate": "^1.0.7"
