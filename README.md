@@ -38,7 +38,7 @@
 
 ```bash
 $ git clone https://github.com/BlackishGreen33/QingWang-Law.git
-$ cd BiliBili-Analyzer
+$ cd QingWang-Law
 $ pnpm install
 $ pnpm run dev
 ```
