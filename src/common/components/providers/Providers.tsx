@@ -10,18 +10,18 @@ import Layout from '@/common/components/layouts';
 import StyledComponentsRegistry from '@/common/libs/registry';
 import GlobalStyles from '@/common/styles/GlobalStyles';
 
-interface ProvidersProps  {
+interface ProvidersProps {
   children: React.ReactNode;
-};
+}
 
 const Providers: React.FC<ProvidersProps> = React.memo(({ children }) => {
   return (
     <StyledComponentsRegistry>
       <GlobalStyles />
-        {/* <NextThemesProvider attribute="class" defaultTheme="light"> */}
-          {/* <ModalProvider /> */}
-            <Layout>{children}</Layout>
-        {/* </NextThemesProvider> */}
+      {/* <NextThemesProvider attribute="class" defaultTheme="light"> */}
+      {/* <ModalProvider /> */}
+      <Layout>{children}</Layout>
+      {/* </NextThemesProvider> */}
     </StyledComponentsRegistry>
   );
 });
