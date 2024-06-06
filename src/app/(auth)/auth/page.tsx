@@ -1,7 +1,13 @@
 import { NextPage } from 'next';
 
+import Auth from '@/module/Auth';
+
 const Page: NextPage = () => {
-  return <div>Have a good coding</div>;
+  return (
+    <>
+      <Auth />
+    </>
+  );
 };
 
 export default Page;
