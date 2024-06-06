@@ -14,7 +14,9 @@ const Breakline: React.FC<BreaklineProps> = React.memo(
         data-testid="breakline"
         {...others}
       >
-        <p className="absolute -mt-3 bg-bgDefault px-2 text-sm">{others.text}</p>
+        <p className="absolute -mt-3 bg-bgDefault px-2 text-sm">
+          {others.text}
+        </p>
       </div>
     );
   }

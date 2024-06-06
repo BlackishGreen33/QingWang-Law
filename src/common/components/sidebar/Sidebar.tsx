@@ -33,7 +33,7 @@ const Sidebar: React.FC = React.memo(() => {
               保存您的聊天历史记录，共享聊天并个性化您的使用体验
             </p>
             <Button
-              className="text-md hover:bg-lightprimary mt-4 h-10 w-full bg-primary text-sm"
+              className="text-md mt-4 h-10 w-full bg-primary text-sm hover:bg-lightprimary"
               onClick={() => router.push('/auth')}
             >
               注册

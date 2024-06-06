@@ -30,7 +30,7 @@ const Auth: React.FC = React.memo(() => {
         </label>
       </div>
       <Button
-        className="text-md hover:bg-lightprimary mt-6 h-14 w-80 bg-primary"
+        className="text-md mt-6 h-14 w-80 bg-primary hover:bg-lightprimary"
         onClick={() => router.push('/')}
       >
         继续
