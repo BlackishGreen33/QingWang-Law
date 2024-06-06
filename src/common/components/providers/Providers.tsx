@@ -1,7 +1,7 @@
 'use client';
 
 // import { type ThemeProviderProps } from "next-themes/dist/types";
-// import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import React from 'react';
 
 // import ProgressBar from '@/common/components/elements/ProgressBar';
@@ -18,10 +18,10 @@ const Providers: React.FC<ProvidersProps> = React.memo(({ children }) => {
   return (
     <StyledComponentsRegistry>
       <GlobalStyles />
-      {/* <NextThemesProvider attribute="class" defaultTheme="light"> */}
-      {/* <ModalProvider /> */}
-      <Layout>{children}</Layout>
-      {/* </NextThemesProvider> */}
+      <NextThemesProvider attribute="class" defaultTheme="light">
+        {/* <ModalProvider /> */}
+        <Layout>{children}</Layout>
+      </NextThemesProvider>
     </StyledComponentsRegistry>
   );
 });
