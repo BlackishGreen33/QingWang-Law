@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="130" src="https://github.com/BlackishGreen33/QingWang-Law/blob/main/public/logo.jpg?raw=true" alt="青望法律大模型">
+  <img width="130" src="https://github.com/BlackishGreen33/QingWang-Law/blob/main/public/logo.png?raw=true" alt="青望法律大模型">
   <h1 align="center">QingWang-Law</h1>
   <h3>青望法律大模型</h3>
   <a href="https://github.com/BlackishGreen33/QingWang-Law"><strong>探索项目文档 »</strong></a>
