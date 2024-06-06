@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: '青望_LAW | 法律大模型',
-  description: '"青望_LAW - 法律大模型',
+  description: '"青望_LAW | 法律大模型',
 };
 
 export default function RootLayout({

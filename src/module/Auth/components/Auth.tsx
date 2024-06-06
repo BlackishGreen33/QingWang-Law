@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { SiMicrosoft } from 'react-icons/si';
@@ -6,7 +9,9 @@ import { SiMicrosoft } from 'react-icons/si';
 import Breakline from '@/common/components/elements/Breakline';
 import { Button } from '@/common/components/ui/button';
 
-const Auth: React.FC = () => {
+const Auth: React.FC = React.memo(() => {
+  const router = useRouter();
+
   return (
     <div className="flex h-screen flex-col items-center justify-center">
       <p className="text-3xl font-bold">欢迎回来</p>
@@ -24,7 +29,10 @@ const Auth: React.FC = () => {
           电子邮件地址
         </label>
       </div>
-      <Button className="text-md hover:bg-lightprimary mt-6 h-14 w-80 bg-primary">
+      <Button
+        className="text-md hover:bg-lightprimary mt-6 h-14 w-80 bg-primary"
+        onClick={() => router.push('/')}
+      >
         继续
       </Button>
       <p className="mt-4 flex text-sm">
@@ -46,6 +54,6 @@ const Auth: React.FC = () => {
       </Button>
     </div>
   );
-};
+});
 
 export default Auth;
