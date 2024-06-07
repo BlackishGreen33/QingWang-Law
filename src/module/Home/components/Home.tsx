@@ -20,7 +20,10 @@ const Home: React.FC = React.memo(() => {
       </div>
       <div className="flex h-[85vh] w-full flex-col items-center justify-center gap-4">
         <Avatar className="h-12 w-12 rounded-full border-2 border-gray-300">
-          <AvatarImage src="./logo.jpg" alt="青望_LAW" />
+          <AvatarImage
+            src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png"
+            alt="青望_LAW"
+          />
           <AvatarFallback>青望_LAW</AvatarFallback>
         </Avatar>
         <p className="text-xl font-bold">今天能帮您些什么？</p>
