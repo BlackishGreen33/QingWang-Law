@@ -1,11 +1,11 @@
 import { NextPage } from 'next';
 
-import Auth from '@/module/Auth';
+import Login from '@/module/Login';
 
 const Page: NextPage = () => {
   return (
     <>
-      <Auth />
+      <Login />
     </>
   );
 };

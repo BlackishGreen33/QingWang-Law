@@ -9,7 +9,7 @@ import { SiMicrosoft } from 'react-icons/si';
 import Breakline from '@/common/components/elements/Breakline';
 import { Button } from '@/common/components/ui/button';
 
-const Auth: React.FC = React.memo(() => {
+const Login: React.FC = React.memo(() => {
   const router = useRouter();
 
   return (
@@ -56,4 +56,4 @@ const Auth: React.FC = React.memo(() => {
   );
 });
 
-export default Auth;
+export default Login;

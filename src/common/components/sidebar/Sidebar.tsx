@@ -34,13 +34,13 @@ const Sidebar: React.FC = React.memo(() => {
             </p>
             <Button
               className="text-md mt-4 h-10 w-full bg-primary text-sm hover:bg-lightprimary"
-              onClick={() => router.push('/auth')}
+              onClick={() => router.push('/register')}
             >
               注册
             </Button>
             <Button
               className="text-md mt-2 h-10 w-full border border-gray-300 bg-white text-sm text-black shadow-none hover:bg-gray-200"
-              onClick={() => router.push('/auth')}
+              onClick={() => router.push('/login')}
             >
               登录
             </Button>
