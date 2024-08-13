@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
+import AccessToken from '@/common/components/auth/AccessToken';
 import AuthInput from '@/common/components/auth/AuthInput';
 import Breakline from '@/common/components/elements/Breakline';
 import { Button } from '@/common/components/ui/button';
@@ -43,11 +44,7 @@ const Login: React.FC = React.memo(() => {
         </Link>
       </p>
       <Breakline className="mt-8 h-[1px] w-80" text="或"></Breakline>
-      <Button className="text-md mt-4 h-14 w-80 justify-start border-[1.5px] border-gray-300 bg-transparent text-black shadow-none">
-        <p className="text-md flex w-full items-center justify-center gap-4 font-bold">
-          Continue with AccessToken
-        </p>
-      </Button>
+      <AccessToken />
     </div>
   );
 });
