@@ -2,8 +2,8 @@
 
 import { useMediaQuery } from '@react-hook/media-query';
 import { motion } from 'framer-motion';
-import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
+import { useTheme } from 'next-themes';
 import React, { useCallback } from 'react';
 import { CiCircleQuestion } from 'react-icons/ci';
 
@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
   );
 
   return (
-    <>
+    <div>
       {!(pathname === '/auth') && activeMenu && (
         <div className="relative flex">
           {!isMDScreen && (
@@ -83,7 +83,7 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
           )}
         </div>
       </motion.div>
-    </>
+    </div>
   );
 });
 
