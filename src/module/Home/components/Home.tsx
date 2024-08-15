@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import React from 'react';
 import { BsArrowUpSquareFill } from 'react-icons/bs';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown, FaRegLightbulb } from 'react-icons/fa';
+import { HiAcademicCap } from 'react-icons/hi2';
+import { PiAirplaneTakeoffBold } from 'react-icons/pi';
+import { TbPencilMinus } from 'react-icons/tb';
 
 import {
   Avatar,
@@ -27,6 +30,24 @@ const Home: React.FC = React.memo(() => {
           <AvatarFallback>青望_LAW</AvatarFallback>
         </Avatar>
         <p className="text-xl font-bold">今天能帮您些什么？</p>
+        <div className="grid w-2/3 grid-cols-2 grid-rows-2 gap-5 sm:w-1/2 md:w-1/3 lg:w-1/4 2xl:w-1/5">
+          <div className="flex cursor-pointer flex-col gap-1 rounded-2xl border-2 border-gray-300 p-4 shadow-md hover:bg-gray-100">
+            <TbPencilMinus className="text-lg text-purple-400" />
+            感谢我的面试官
+          </div>
+          <div className="flex cursor-pointer flex-col gap-1 rounded-2xl border-2 border-gray-300 p-4 shadow-md hover:bg-gray-100">
+            <FaRegLightbulb className="text-lg text-yellow-400" />
+            用于在新城市结交朋友的活动
+          </div>
+          <div className="flex cursor-pointer flex-col gap-1 rounded-2xl border-2 border-gray-300 p-4 shadow-md hover:bg-gray-100">
+            <HiAcademicCap className="text-lg text-green-400" />
+            解释超导体
+          </div>
+          <div className="flex cursor-pointer flex-col gap-1 rounded-2xl border-2 border-gray-300 p-4 shadow-md hover:bg-gray-100">
+            <PiAirplaneTakeoffBold className="text-lg text-yellow-400" />
+            规划一个放松日
+          </div>
+        </div>
       </div>
       <div className="flex flex-col items-center gap-2">
         <div className="flex w-[98%] md:w-780">
