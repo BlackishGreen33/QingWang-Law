@@ -34,7 +34,7 @@ const Register: React.FC = React.memo(() => {
         { headers: { 'Content-Type': 'application/json' } }
       );
       if (res.status === 200) {
-        router.push('/');
+        router.push('/login');
       }
     } catch (error) {
       toast({
