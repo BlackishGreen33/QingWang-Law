@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -17,6 +18,27 @@ const Register: React.FC = React.memo(() => {
     password: '',
     confirmPassword: '',
   });
+
+  const handleRegister = async () => {
+    try {
+      const res = await axios.post(
+        'http://0.0.0.0:6006/register',
+        {
+          username: registerForm.email,
+          password1: registerForm.password,
+          password2: registerForm.confirmPassword,
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      if (res.status === 200) {
+        router.push('/');
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      alert('注册失败');
+    }
+  };
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
@@ -47,7 +69,7 @@ const Register: React.FC = React.memo(() => {
       />
       <Button
         className="text-md mt-6 h-14 w-80 bg-primary hover:bg-lightprimary"
-        onClick={() => router.push('/')}
+        onClick={handleRegister}
       >
         注册
       </Button>

@@ -1,5 +1,6 @@
 'use client';
 
+import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
@@ -13,6 +14,26 @@ const Login: React.FC = React.memo(() => {
   const router = useRouter();
 
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
+
+  const handleLogin = async () => {
+    try {
+      const res = await axios.post(
+        'http://0.0.0.0:6006/login',
+        {
+          username: loginForm.email,
+          password: loginForm.password,
+        },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+      if (res.status === 200) {
+        router.push('/');
+      }
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      alert('登录失败');
+    }
+  };
 
   return (
     <div className="flex h-screen flex-col items-center justify-center">
@@ -33,7 +54,7 @@ const Login: React.FC = React.memo(() => {
       />
       <Button
         className="text-md mt-6 h-14 w-80 bg-primary hover:bg-lightprimary"
-        onClick={() => router.push('/')}
+        onClick={handleLogin}
       >
         登录
       </Button>
