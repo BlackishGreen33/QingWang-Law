@@ -33,11 +33,11 @@ const Login: React.FC = React.memo(() => {
       }
     } catch (error) {
       toast({
-        variant: "destructive",
-        title: "登录失败",
-        description: "请检查您的电子邮件地址和密码。",
+        variant: 'destructive',
+        title: '登录失败',
+        description: '请检查您的电子邮件地址和密码。',
         action: <ToastAction altText="Try again">重试一次</ToastAction>,
-      })
+      });
     }
   };
 

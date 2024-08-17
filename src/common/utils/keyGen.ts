@@ -8,7 +8,7 @@ const keyGen = function* () {
 const uniqueKeyUtil = (() => {
   const generator = keyGen();
   return {
-    nextKey: () => generator.next().value
+    nextKey: () => generator.next().value,
   };
 })();
 

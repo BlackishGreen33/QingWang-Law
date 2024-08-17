@@ -20,7 +20,10 @@ const Sidebar: React.FC = React.memo(() => {
           <div className="ml-1 mt-4 flex items-center justify-between pr-2">
             <div className="flex items-center gap-3">
               <Avatar className="h-7 w-7 rounded-full border-2 border-gray-300">
-                <AvatarImage src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png" alt="青望_LAW" />
+                <AvatarImage
+                  src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png"
+                  alt="青望_LAW"
+                />
                 <AvatarFallback>青望_LAW</AvatarFallback>
               </Avatar>
               <p className="font-bold">新聊天</p>
