@@ -9,6 +9,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/common/components/ui/avatar';
+import uniqueKeyUtil from '@/common/utils/keyGen';
 
 type RecommendMessage = {
   icon: React.ReactNode;
@@ -55,8 +56,12 @@ const Recommend: React.FC = React.memo(() => {
       </Avatar>
       <p className="text-xl font-bold">今天能帮您些什么？</p>
       <div className="grid w-2/3 grid-cols-2 grid-rows-2 gap-5 sm:w-1/2 md:w-1/3 lg:w-1/4 2xl:w-1/5">
-        {Recommend_Messages.map((item, index) => (
-          <RecommendCard key={index} icon={item.icon} message={item.message} />
+        {Recommend_Messages.map((item) => (
+          <RecommendCard
+            key={uniqueKeyUtil.nextKey()}
+            icon={item.icon}
+            message={item.message}
+          />
         ))}
       </div>
     </section>
