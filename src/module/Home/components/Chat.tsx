@@ -23,7 +23,7 @@ interface ChatProps {
 
 const Chat: React.FC<ChatProps> = React.memo(({ messages }) => {
   return (
-    <div id='markdown' className="flex h-full w-[98%] flex-col gap-4 md:w-780">
+    <div id="markdown" className="flex h-full w-[98%] flex-col gap-4 md:w-780">
       {messages.map((item) => (
         <div
           key={uniqueKeyUtil.nextKey()}
@@ -42,7 +42,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ messages }) => {
                 />
                 <AvatarFallback>青望_LAW</AvatarFallback>
               </Avatar>
-              <Markdown remarkPlugins={[remarkGfm]} className="mt-1">
+              <Markdown remarkPlugins={[remarkGfm]} className="-mt-2">
                 {item.message}
               </Markdown>
             </div>
