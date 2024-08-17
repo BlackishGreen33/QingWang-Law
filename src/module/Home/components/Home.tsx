@@ -5,7 +5,32 @@ import { FaChevronDown } from 'react-icons/fa';
 
 import { Input } from '@/common/components/ui/input';
 
+import Chat from './Chat';
 import Recommend from './Recommend';
+
+type Message = {
+  message: string;
+  isMe: boolean;
+};
+
+const Messages: Message[] = [
+  {
+    message: '可以输入案件帮我分析吗？',
+    isMe: true,
+  },
+  {
+    message: '当然，请提供具体的案件细节，这样我可以更好的为你进行分析。',
+    isMe: false,
+  },
+  {
+    message: '123',
+    isMe: true,
+  },
+  {
+    message: '# Hi, *Pluto* !',
+    isMe: false,
+  },
+];
 
 const Home: React.FC = React.memo(() => {
   return (
@@ -15,7 +40,9 @@ const Home: React.FC = React.memo(() => {
         <p className="font-bold text-gray-500">3.5</p>
         <FaChevronDown className="text-gray-300" />
       </div>
-      <Recommend />
+      <section className="flex h-[85vh] w-full flex-col items-center justify-center gap-4 overflow-y-scroll scrollbar-hide">
+        {Messages.length !== 0 ? <Chat messages={Messages} /> : <Recommend />}
+      </section>
       <div className="flex flex-col items-center gap-2">
         <div className="flex w-[98%] md:w-780">
           <Input
