@@ -12,6 +12,7 @@ import useStore from '@/common/hooks/useStore';
 
 import MenuActiver from '../elements/MenuActiver';
 import Sidebar from '../sidebar/Sidebar';
+import { Toaster } from '../ui/toaster';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -93,6 +94,7 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
           )}
         </div>
       </motion.div>
+      <Toaster />
     </>
   );
 });

@@ -9,9 +9,12 @@ import AccessToken from '@/common/components/auth/AccessToken';
 import AuthInput from '@/common/components/auth/AuthInput';
 import Breakline from '@/common/components/elements/Breakline';
 import { Button } from '@/common/components/ui/button';
+import { ToastAction } from '@/common/components/ui/toast';
+import { useToast } from '@/common/components/ui/use-toast';
 
 const Register: React.FC = React.memo(() => {
   const router = useRouter();
+  const { toast } = useToast();
 
   const [registerForm, setRegisterForm] = useState({
     email: '',
@@ -34,9 +37,12 @@ const Register: React.FC = React.memo(() => {
         router.push('/');
       }
     } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-      alert('注册失败');
+      toast({
+        variant: "destructive",
+        title: "注册失败",
+        description: "请检查您的电子邮件地址和密码。",
+        action: <ToastAction altText="Try again">重试一次</ToastAction>,
+      })
     }
   };
 
