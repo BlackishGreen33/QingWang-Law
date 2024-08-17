@@ -2,6 +2,8 @@ import React from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
+import '@/common/styles/markdown.scss';
+
 import {
   Avatar,
   AvatarFallback,

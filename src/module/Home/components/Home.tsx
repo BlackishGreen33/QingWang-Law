@@ -27,7 +27,13 @@ const Messages: Message[] = [
     isMe: true,
   },
   {
-    message: '# Hi, *Pluto* !',
+    message: `# Hi, *Pluto*
+## 测试
+### 123
+#### 465
+> 321
+* 231
+[123](https://www.google.com)`,
     isMe: false,
   },
 ];
