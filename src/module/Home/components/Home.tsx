@@ -1,5 +1,7 @@
+'use client';
+
 import Link from 'next/link';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BsArrowUpSquareFill } from 'react-icons/bs';
 import { FaChevronDown } from 'react-icons/fa';
 
@@ -46,6 +48,13 @@ const Messages: Message[] = [
 ];
 
 const Home: React.FC = React.memo(() => {
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      window.location.href = '/login';
+    }
+  }, []);
+
   return (
     <>
       <div className="ml-8 mt-4 flex items-center gap-1 text-lg">

@@ -1,24 +1,53 @@
 'use client';
 
+import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React from 'react';
-import { BsThreeDots } from 'react-icons/bs';
+import React, { useEffect } from 'react';
 import { PiNotePencilBold } from 'react-icons/pi';
 
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/common/components/ui/avatar';
 import useStore from '@/common/hooks/useStore';
+import uniqueKeyUtil from '@/common/utils/keyGen';
 import { cn } from '@/common/utils/utils';
 
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import Room from './Room';
 import { Button } from '../ui/button';
+
+type Room = {
+  title: string;
+  chat_id: string;
+};
 
 const Sidebar: React.FC = React.memo(() => {
   const router = useRouter();
   const { activeMenu } = useStore();
 
-  let token;
+  const [rooms, setRooms] = React.useState<Room[]>([]);
+
+  let token = '';
   if (typeof window !== 'undefined') {
-    token = localStorage.getItem('token');
+    token = localStorage.getItem('token')!;
   }
+
+  useEffect(() => {
+    const getChatrooms = async () => {
+      try {
+        const fetchRooms = await axios.get('http://127.0.0.1:6006/chat/list', {
+          headers: { Authorization: token as string },
+        });
+        setRooms(fetchRooms.data.chats);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+    };
+    getChatrooms();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="mx-2 h-full overflow-auto pb-10 md:overflow-hidden md:hover:overflow-auto">
@@ -43,10 +72,13 @@ const Sidebar: React.FC = React.memo(() => {
             </div>
             <PiNotePencilBold className="cursor-pointer text-lg" />
           </div>
-          <div className="group flex items-center justify-between rounded-lg px-4 py-2 hover:bg-gray-200">
-            <p>123</p>
-            <BsThreeDots className="hidden cursor-pointer group-hover:block" />
-          </div>
+          {rooms.map((item) => (
+            <Room
+              key={uniqueKeyUtil.nextKey()}
+              title={item.title}
+              chat_id={item.chat_id}
+            />
+          ))}
           {!token && (
             <div className="flex flex-col p-2">
               <p className="text-sm font-bold">注册或登录</p>
