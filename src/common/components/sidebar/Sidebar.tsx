@@ -10,12 +10,12 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@/common/components/ui/avatar';
+import { Button } from '@/common/components/ui/button';
 import useStore from '@/common/hooks/useStore';
 import uniqueKeyUtil from '@/common/utils/keyGen';
 import { cn } from '@/common/utils/utils';
 
 import Room from './Room';
-import { Button } from '../ui/button';
 
 type Room = {
   title: string;
@@ -33,6 +33,27 @@ const Sidebar: React.FC = React.memo(() => {
     token = localStorage.getItem('token')!;
   }
 
+  const createRoom = async () => {
+    try {
+      const chatroom = await axios.post(
+        'http://127.0.0.1:6006/chat/new_chat',
+        {},
+        {
+          headers: { Authorization: token as string },
+        }
+      );
+      window.location.href = `/chat/${chatroom.data.chat_id}`;
+    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      if (error.response.status === 401) {
+        window.location.href = '/login';
+      }
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     const getChatrooms = async () => {
       try {
@@ -41,13 +62,17 @@ const Sidebar: React.FC = React.memo(() => {
         });
         setRooms(fetchRooms.data.chats);
       } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        if (error.response.status === 401) {
+          window.location.href = '/login';
+        }
         // eslint-disable-next-line no-console
         console.log(error);
       }
     };
     getChatrooms();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [token]);
 
   return (
     <div className="mx-2 h-full overflow-auto pb-10 md:overflow-hidden md:hover:overflow-auto">
@@ -70,7 +95,10 @@ const Sidebar: React.FC = React.memo(() => {
               </Avatar>
               <p className="font-bold">新聊天</p>
             </div>
-            <PiNotePencilBold className="cursor-pointer text-lg" />
+            <PiNotePencilBold
+              className="cursor-pointer text-lg"
+              onClick={createRoom}
+            />
           </div>
           {rooms.map((item) => (
             <Room
