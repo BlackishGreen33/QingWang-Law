@@ -30,62 +30,92 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
     token = localStorage.getItem('token')!;
   }
 
-  const getMessages = useCallback(async () => {
-    try {
-      const fetchMessages = await axios.get(
-        `http://127.0.0.1:6006/chat/${chat_id}?chat_id=${chat_id}`,
-        {
-          headers: { Authorization: token as string },
+  const getMessages = useCallback(
+    async (isFlow?: boolean) => {
+      try {
+        const fetchMessages = await axios.get(
+          `http://127.0.0.1:6006/chat/${chat_id}?chat_id=${chat_id}`,
+          {
+            headers: { Authorization: token as string },
+          }
+        );
+        const data = fetchMessages.data.messages.map(
+          (message: { content: string; role: string }) => ({
+            message: message.content,
+            isMe: message.role === 'user',
+          })
+        );
+
+        if (isFlow) {
+          const dataWithoutLastElement = data.slice(0, -1);
+          setMessages(dataWithoutLastElement);
+          const lastElement = data.at(-1);
+          if (lastElement && lastElement.message.isMe === false) {
+            setMessages([...messages, { message: '', isMe: false }]);
+            const strToAppend = lastElement.message;
+            const appendCharacter = (index = 0) => {
+              if (index < strToAppend.length) {
+                const newMessages = [...messages];
+                newMessages[newMessages.length - 1].message +=
+                  strToAppend.charAt(index);
+                setMessages(newMessages);
+                setTimeout(() => {
+                  appendCharacter(index + 1);
+                }, 100);
+              }
+            };
+          }
+        } else {
+          setMessages(data);
         }
-      );
-      const data = fetchMessages.data.messages.map(
-        (message: { content: string; role: string }) => ({
-          message: message.content,
-          isMe: message.role === 'user',
-        })
-      );
-      setMessages(data);
-      // const dataWithoutLastElement = data.slice(0, -1);
-      // setMessages(dataWithoutLastElement);
-      // const lastElement = data.at(-1);
-      // if (lastElement && lastElement.message.isMe === false) {
-      //   setMessages([...messages, { message: '', isMe: false }]);
-      //   const strToAppend = lastElement.message;
-      //   const appendCharacter = (index = 0) => {
-      //     if (index < strToAppend.length) {
-      //       const newMessages = [...messages];
-      //       newMessages[newMessages.length - 1].message +=
-      //         strToAppend.charAt(index);
-      //       setMessages(newMessages);
-      //       setTimeout(() => {
-      //         appendCharacter(index + 1);
-      //       }, 50);
-      //     }
-      //   };
-      // }
-    } catch (error) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      if (error.response && error?.response.status === 401) {
-        window.location.href = '/login';
+      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        if (error.response && error?.response.status === 401) {
+          window.location.href = '/login';
+        }
+        // eslint-disable-next-line no-console
+        console.log(error);
       }
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-  }, [chat_id, token]);
+    },
+    [chat_id, messages, token]
+  );
 
   const sentQuestion = async () => {
     try {
-      const anwser = await axios.post(
-        `http://127.0.0.1:6006/chat/stream/${chat_id}?chat_id=${chat_id}`,
-        { inputs: question },
+      const input = question;
+      setQuestion('');
+      const anwser = await axios.get(
+        `http://127.0.0.1:6006/chat/stream/${chat_id}?chat_id=${chat_id}&inputs=${input}`,
         {
           headers: { Authorization: token as string },
         }
       );
-      setQuestion('');
-      console.log(anwser);
-      getMessages();
+      // const reader = anwser.body.getReader();
+      // const decoder = new TextDecoder();
+      // while (1) {
+      //   // 读取数据流的第一块数据，done表示数据流是否完成，value表示当前的数
+      //   const { done, value } = await reader.read();
+      //   if (done) break;
+      //   const text = decoder.decode(value);
+      //   // 打印第一块的文本内容
+      //   console.log(text, done);
+      // }
+      // const fetchMessages = await axios.get(
+      //   `http://127.0.0.1:6006/chat/${chat_id}?chat_id=${chat_id}`,
+      //   {
+      //     headers: { Authorization: token as string },
+      //   }
+      // );
+      // const data = fetchMessages.data.messages.map(
+      //   (message: { content: string; role: string }) => ({
+      //     message: message.content,
+      //     isMe: message.role === 'user',
+      //   })
+      // );
+      // const dataWithoutLastElement = data.slice(0, -1);
+      // setMessages(dataWithoutLastElement);
+      getMessages(true);
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
@@ -98,7 +128,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
   };
 
   useEffect(() => {
-    getMessages();
+    getMessages(false);
   }, [getMessages]);
 
   return (

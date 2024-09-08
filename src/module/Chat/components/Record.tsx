@@ -1,14 +1,10 @@
+import Image from 'next/image';
 import React from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 import '@/common/styles/markdown.scss';
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@/common/components/ui/avatar';
 import uniqueKeyUtil from '@/common/utils/keyGen';
 import { cn } from '@/common/utils/utils';
 
@@ -35,13 +31,13 @@ const Chat: React.FC<ChatProps> = React.memo(({ messages }) => {
             </p>
           ) : (
             <div className="flex w-4/5 gap-4">
-              <Avatar className="h-8 w-8 rounded-full border-2 border-gray-300">
-                <AvatarImage
-                  src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png"
-                  alt="青望_LAW"
-                />
-                <AvatarFallback>青望_LAW</AvatarFallback>
-              </Avatar>
+              <Image
+                className="h-8 w-8 rounded-full border-2 border-gray-300"
+                src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png"
+                alt="青望_LAW"
+                width={50}
+                height={50}
+              />
               <Markdown remarkPlugins={[remarkGfm]} className="-mt-2">
                 {item.message}
               </Markdown>
