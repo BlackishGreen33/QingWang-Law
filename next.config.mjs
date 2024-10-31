@@ -19,6 +19,11 @@ const nextConfig = {
     ],
     formats: ['image/avif', 'image/webp'],
   },
+  experimental: {
+    reactCompiler: true,
+    after: true,
+    cssChunking: 'loose',
+  },
 };
 
 export default nextConfig;
