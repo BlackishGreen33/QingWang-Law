@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -18,15 +18,24 @@ interface ChatProps {
 }
 
 const Chat: React.FC<ChatProps> = React.memo(({ messages }) => {
+  const messagesEndRef = useRef<HTMLDivElement>(null); 
+
+  // 当 messages 发生变化时自动滚动到底部
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
   return (
-    <div id="markdown" className="flex h-full w-[98%] flex-col gap-4 md:w-780">
+    <div id="markdown" className="flex h-full w-[98%] flex-col gap-4 overflow-y-auto md:w-780">
       {messages.map((item) => (
         <div
           key={uniqueKeyUtil.nextKey()}
           className={cn('flex', item.isMe ? 'flex-row-reverse' : 'flex-row')}
         >
           {item.isMe ? (
-            <p className="w-fit max-w-4/5 overflow-x-scroll rounded-l-full rounded-r-full bg-gray-100 px-4 py-2 scrollbar-hide">
+            <p className="w-fit max-w-4/5 bg-gray-200 text-black rounded-xl px-4 py-2 whitespace-pre-wrap">
               {item.message}
             </p>
           ) : (
@@ -38,13 +47,17 @@ const Chat: React.FC<ChatProps> = React.memo(({ messages }) => {
                 width={50}
                 height={50}
               />
-              <Markdown remarkPlugins={[remarkGfm]} className="-mt-2">
+              <Markdown
+                remarkPlugins={[remarkGfm]}
+                className="bg-blue-500 text-black rounded-xl px-4 py-2 w-full whitespace-pre-wrap"
+              >
                 {item.message}
               </Markdown>
             </div>
           )}
         </div>
       ))}
+      <div ref={messagesEndRef} /> {/* 占位符，用于滚动到最新消息 */}
     </div>
   );
 });
