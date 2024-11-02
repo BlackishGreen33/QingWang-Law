@@ -21,19 +21,19 @@ interface RecommendCardProps extends RecommendMessage {}
 const Recommend_Messages: RecommendMessage[] = [
   {
     icon: <TbPencilMinus className="text-lg text-purple-400" />,
-    message: '感谢我的面试官',
+    message: '我需要咨询一些法律相关的事宜',
   },
   {
     icon: <FaRegLightbulb className="text-lg text-yellow-400" />,
-    message: '用于在新城市结交朋友的活动',
+    message: '帮我来分析一下案件的情况',
   },
   {
     icon: <HiAcademicCap className="text-lg text-green-400" />,
-    message: '解释超导体',
+    message: '能帮我预测一下判决吗',
   },
   {
     icon: <PiAirplaneTakeoffBold className="text-lg text-yellow-400" />,
-    message: '规划一个放松日',
+    message: '有没有相关的案例提供',
   },
 ];
 
