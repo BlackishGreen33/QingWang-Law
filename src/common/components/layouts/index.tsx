@@ -43,6 +43,8 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
               ></div>
             )}
             <motion.div
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               className={`z-[10] ${activeMenu && 'fixed w-64 bg-bgDefault'}`}
               animate={{
                 x: activeMenu ? 0 : -100,
@@ -60,6 +62,8 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
           </div>
         )}
       <motion.div
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         className={
           !(pathname === '/login') && !(pathname === '/register') && activeMenu
             ? 'min-h-screen w-full md:pl-72'

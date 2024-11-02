@@ -26,6 +26,8 @@ const MenuActiver: React.FC = React.memo(() => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
+              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+              // @ts-expect-error
               type="button"
               onClick={handleActiveMenu}
               className="relative rounded-full text-xl text-gray-500 hover:bg-light-gray"

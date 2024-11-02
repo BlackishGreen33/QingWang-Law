@@ -74,12 +74,14 @@ const Sidebar: React.FC = React.memo(() => {
   }, [token]);
 
   const handleDeleteRoom = (chat_id: string) => {
-    setRooms((prevRooms) => prevRooms.filter((room) => room.chat_id !== chat_id));
+    setRooms((prevRooms) =>
+      prevRooms.filter((room) => room.chat_id !== chat_id)
+    );
   };
 
   const handleRenameRoom = (chat_id: string, newTitle: string) => {
-    setRooms((prevRooms) => 
-      prevRooms.map((room) => 
+    setRooms((prevRooms) =>
+      prevRooms.map((room) =>
         room.chat_id === chat_id ? { ...room, title: newTitle } : room
       )
     );
