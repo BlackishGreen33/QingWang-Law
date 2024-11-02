@@ -42,15 +42,15 @@ const Sidebar: React.FC = React.memo(() => {
           headers: { Authorization: token as string },
         }
       );
-      window.location.href = `/chat/${chatroom.data.chat_id}`;
+      setRooms((prevRooms) => [...prevRooms, chatroom.data]); // 直接更新 rooms 列表
+      router.push(`/chat/${chatroom.data.chat_id}`);
     } catch (error) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
-      if (error.response.status === 401) {
-        window.location.href = '/login';
+      if (error.response?.status === 401) {
+        router.push('/login');
       }
-      // eslint-disable-next-line no-console
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -64,15 +64,26 @@ const Sidebar: React.FC = React.memo(() => {
       } catch (error) {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
-        if (error.response.status === 401) {
-          window.location.href = '/login';
+        if (error.response?.status === 401) {
+          router.push('/login');
         }
-        // eslint-disable-next-line no-console
-        console.log(error);
+        console.error(error);
       }
     };
     getChatrooms();
   }, [token]);
+
+  const handleDeleteRoom = (chat_id: string) => {
+    setRooms((prevRooms) => prevRooms.filter((room) => room.chat_id !== chat_id));
+  };
+
+  const handleRenameRoom = (chat_id: string, newTitle: string) => {
+    setRooms((prevRooms) => 
+      prevRooms.map((room) => 
+        room.chat_id === chat_id ? { ...room, title: newTitle } : room
+      )
+    );
+  };
 
   return (
     <div className="mx-2 h-full overflow-auto pb-10 md:overflow-hidden md:hover:overflow-auto">
@@ -105,6 +116,8 @@ const Sidebar: React.FC = React.memo(() => {
               key={uniqueKeyUtil.nextKey()}
               title={item.title}
               chat_id={item.chat_id}
+              onDelete={handleDeleteRoom}
+              onRename={handleRenameRoom}
             />
           ))}
           {!token && (
