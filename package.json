@@ -32,7 +32,7 @@
     "babel-plugin-react-compiler": "19.0.0-beta-6fc168f-20241025",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
-    "framer-motion": "^11.11.10",
+    "framer-motion": "^11.11.11",
     "next": "15.0.2",
     "next-themes": "^0.3.0",
     "react": "19.0.0-rc-02c0e824-20241028",
