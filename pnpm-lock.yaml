@@ -33,8 +33,8 @@ importers:
         specifier: ^1.7.7
         version: 1.7.7
       babel-plugin-react-compiler:
-        specifier: 19.0.0-beta-6fc168f-20241025
-        version: 19.0.0-beta-6fc168f-20241025
+        specifier: 19.0.0-beta-63b359f-20241101
+        version: 19.0.0-beta-63b359f-20241101
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -46,7 +46,7 @@ importers:
         version: 11.11.11(@emotion/is-prop-valid@1.2.2)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
       next:
         specifier: 15.0.2
-        version: 15.0.2(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(sass@1.80.6)
+        version: 15.0.2(babel-plugin-react-compiler@19.0.0-beta-63b359f-20241101)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(sass@1.80.6)
       next-themes:
         specifier: ^0.4.1
         version: 0.4.1(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)
@@ -1050,8 +1050,8 @@ packages:
     resolution: {integrity: sha512-qIj0G9wZbMGNLjLmg1PT6v2mE9AH2zlnADJD/2tC6E00hgmhUOfEB6greHPAfLRSufHqROIUTkw6E+M3lH0PTQ==}
     engines: {node: '>= 0.4'}
 
-  babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025:
-    resolution: {integrity: sha512-wFVeXhF0hkiRe4bEM0jzeTFMlMbcKNTwhXcFvqUIVB6WXf+3vdwOWGWnw7jwvDb2mzvsIZOFt/96itOFt1rwjw==}
+  babel-plugin-react-compiler@19.0.0-beta-63b359f-20241101:
+    resolution: {integrity: sha512-qrmTHJP3O2kGbtL7kuySX3Lmk+5/4ZR1rHr8QhKa0GzKbmpAUGrTeWOg0NCI5t+QUfKKizxIO1+t0HsZW9x4vQ==}
 
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
@@ -3861,7 +3861,7 @@ snapshots:
 
   axobject-query@4.1.0: {}
 
-  babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025:
+  babel-plugin-react-compiler@19.0.0-beta-63b359f-20241101:
     dependencies:
       '@babel/types': 7.26.0
 
@@ -5318,7 +5318,7 @@ snapshots:
       react: 19.0.0-rc-02c0e824-20241028
       react-dom: 19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028)
 
-  next@15.0.2(babel-plugin-react-compiler@19.0.0-beta-6fc168f-20241025)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(sass@1.80.6):
+  next@15.0.2(babel-plugin-react-compiler@19.0.0-beta-63b359f-20241101)(react-dom@19.0.0-rc-02c0e824-20241028(react@19.0.0-rc-02c0e824-20241028))(react@19.0.0-rc-02c0e824-20241028)(sass@1.80.6):
     dependencies:
       '@next/env': 15.0.2
       '@swc/counter': 0.1.3
@@ -5338,7 +5338,7 @@ snapshots:
       '@next/swc-linux-x64-musl': 15.0.2
       '@next/swc-win32-arm64-msvc': 15.0.2
       '@next/swc-win32-x64-msvc': 15.0.2
-      babel-plugin-react-compiler: 19.0.0-beta-6fc168f-20241025
+      babel-plugin-react-compiler: 19.0.0-beta-63b359f-20241101
       sass: 1.80.6
       sharp: 0.33.5
     transitivePeerDependencies:
