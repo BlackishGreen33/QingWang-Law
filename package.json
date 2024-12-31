@@ -29,7 +29,7 @@
     "@radix-ui/react-tooltip": "^1.1.6",
     "@react-hook/media-query": "^1.1.1",
     "axios": "^1.7.9",
-    "babel-plugin-react-compiler": "19.0.0-beta-201e55d-20241215",
+    "babel-plugin-react-compiler": "19.0.0-beta-55955c9-20241229",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^11.13.1",
