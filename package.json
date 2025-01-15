@@ -40,7 +40,7 @@
     "react-icons": "^5.4.0",
     "react-markdown": "^9.0.3",
     "remark-gfm": "^4.0.0",
-    "sass": "^1.83.1",
+    "sass": "^1.83.4",
     "socket.io-client": "^4.8.1",
     "styled-components": "^6.1.14",
     "tailwind-merge": "^2.6.0",
