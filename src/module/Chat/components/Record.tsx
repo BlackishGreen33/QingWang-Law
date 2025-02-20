@@ -5,6 +5,12 @@ import remarkGfm from 'remark-gfm';
 
 import '@/common/styles/markdown.scss';
 
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/common/components/ui/tooltip';
 import uniqueKeyUtil from '@/common/utils/keyGen';
 import { cn } from '@/common/utils/utils';
 
@@ -40,26 +46,41 @@ const Record: React.FC<ChatProps> = React.memo(
     }, [messages, thinkingMessage]);
 
     // 词表和解释表
-    const vocabulary = {
+    const vocabulary: Record<string, string> = {
       权利: '权利是指法律赋予个人或团体的合法权益。',
       权力: '权力是指国家机关或公职人员依法行使的公共职权。',
     };
 
-    // 处理文本，标红词表中的词汇并添加气泡提示
     const processText = (text: string) => {
-      return text.split(' ').map((word, index) => {
-        if (word in vocabulary) {
-          return (
-            <span key={index} className="group relative text-red-500">
-              {word}
-              <span className="absolute mt-2 hidden rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:block">
-                {vocabulary[word as keyof typeof vocabulary]}
-              </span>
-            </span>
-          );
-        }
-        return word + ' ';
-      });
+      const words = Object.keys(vocabulary);
+      words.sort((a, b) => b.length - a.length);
+
+      const regex = new RegExp(`(${words.join('|')})`, 'g');
+
+      const parts = text.split(regex);
+      const highlightedText = parts.map((part, index) =>
+        words.includes(part) ? (
+          <TooltipProvider key={index}>
+            <Tooltip>
+              <TooltipTrigger>
+                <span
+                  className={`${text.startsWith(part) ? 'mr-0.5' : text.endsWith(part) ? 'ml-0.5' : 'mx-0.5'} flex flex-col`}
+                >
+                  <span>{part}</span>
+                  <span className="left-0 -mt-0.5 w-full border border-dashed border-gray-400"></span>
+                </span>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>{vocabulary[part]}</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        ) : (
+          <React.Fragment key={index}>{part}</React.Fragment>
+        )
+      );
+
+      return <>{highlightedText}</>;
     };
 
     return (

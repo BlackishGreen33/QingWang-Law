@@ -13,18 +13,22 @@ import { useToast } from '@/common/components/ui/use-toast';
 const Register: React.FC = React.memo(() => {
   const router = useRouter();
   const { toast } = useToast();
-  const [isCooldown, setIsCooldown] = useState(false);
-  const [countdown, setCountdown] = useState(60); // 60 秒倒计时
-  const [registerForm, setRegisterForm] = useState({
+  const [isCooldown, setIsCooldown] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number>(60);
+  const [registerForm, setRegisterForm] = useState<{
+    email: string;
+    code: string;
+    password: string;
+    confirmPassword: string;
+  }>({
     email: '',
     code: '',
     password: '',
     confirmPassword: '',
   });
 
-  // 发送验证码请求
   const sendCode = async () => {
-    if (isCooldown) return; // 如果在冷却状态，直接返回
+    if (isCooldown) return;
 
     try {
       const res = await axios.post(
@@ -42,7 +46,6 @@ const Register: React.FC = React.memo(() => {
           description: '请检查您的邮箱',
         });
 
-        // 启动倒计时
         setIsCooldown(true);
         setCountdown(60);
 
@@ -51,7 +54,7 @@ const Register: React.FC = React.memo(() => {
             if (prev === 1) {
               clearInterval(timer);
               setIsCooldown(false);
-              return 60; // 复位倒计时
+              return 60;
             }
             return prev - 1;
           });
