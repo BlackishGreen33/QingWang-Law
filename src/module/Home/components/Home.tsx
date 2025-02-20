@@ -59,7 +59,7 @@ const Home: React.FC = React.memo(() => {
     <>
       <div className="ml-8 mt-4 flex items-center gap-1 text-lg">
         <p className="font-bold">LAW</p>
-        <p className="font-bold text-gray-500">3.5</p>
+        <p className="font-bold text-gray-500">智能法律助手</p>
         <FaChevronDown className="text-gray-300" />
       </div>
       <section className="flex h-[85vh] w-full flex-col items-center justify-center gap-4 overflow-y-scroll scrollbar-hide">
