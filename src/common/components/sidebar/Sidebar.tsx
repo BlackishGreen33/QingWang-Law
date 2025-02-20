@@ -1,12 +1,13 @@
 'use client';
 
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
-import { PiNotePencilBold } from 'react-icons/pi';
 import { FaUser, FaUsers } from 'react-icons/fa';
-import { motion, AnimatePresence } from 'framer-motion';
+import { PiNotePencilBold } from 'react-icons/pi';
 
+import MenuActiver from '@/common/components/elements/MenuActiver';
 import {
   Avatar,
   AvatarFallback,
@@ -17,7 +18,6 @@ import useStore from '@/common/hooks/useStore';
 import uniqueKeyUtil from '@/common/utils/keyGen';
 import { cn } from '@/common/utils/utils';
 
-import MenuActiver from '../elements/MenuActiver';
 import Room from './Room';
 
 // 定义聊天室类型
@@ -50,7 +50,7 @@ const Sidebar: React.FC = React.memo(() => {
       setRooms([...rooms, chatroom.data]);
       router.push(`/chat/${chatroom.data.chat_id}`);
     } catch (error) {
-      if ((error as any).response?.status === 401) {
+      if ((error as AxiosError).response?.status === 401) {
         router.push('/login');
       }
     }
@@ -61,11 +61,11 @@ const Sidebar: React.FC = React.memo(() => {
     const getChatrooms = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:6006/chat/list', {
-          headers: { Authorization: token }
+          headers: { Authorization: token },
         });
         setRooms(response.data.chats);
       } catch (error) {
-        if ((error as any).response?.status === 401) {
+        if ((error as AxiosError).response?.status === 401) {
           router.push('/login');
         }
       }
@@ -75,13 +75,13 @@ const Sidebar: React.FC = React.memo(() => {
 
   // 删除聊天室
   const handleDeleteRoom = (chatId: string) => {
-    setRooms(rooms.filter(room => room.chat_id !== chatId));
+    setRooms(rooms.filter((room) => room.chat_id !== chatId));
   };
 
   // 重命名聊天室
   const handleRenameRoom = (chatId: string, newTitle: string) => {
     setRooms(
-      rooms.map(room =>
+      rooms.map((room) =>
         room.chat_id === chatId ? { ...room, title: newTitle } : room
       )
     );
@@ -93,14 +93,17 @@ const Sidebar: React.FC = React.memo(() => {
       <motion.div
         className={cn(
           'fixed left-0 top-0 h-full bg-white shadow-xl transition-all duration-300',
-          'dark:bg-gray-800 dark:border-gray-700 flex flex-col',
+          'flex flex-col dark:border-gray-700 dark:bg-gray-800',
           activeMenu ? 'w-64' : 'w-16' // 修改为固定最小宽度
         )}
       >
         {/* 始终显示的顶部区域 */}
-        <div className="flex flex-col items-center p-2 border-b dark:border-gray-700">
+        <div className="flex flex-col items-center border-b p-2 dark:border-gray-700">
           {/* Logo */}
-          <motion.div whileHover={{ scale: 1.1 }} className="cursor-pointer p-2">
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            className="cursor-pointer p-2"
+          >
             <Avatar className="h-10 w-10 border-2 border-primary">
               <AvatarImage
                 src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png"
@@ -112,10 +115,14 @@ const Sidebar: React.FC = React.memo(() => {
 
           {/* 新建按钮（迷你模式） */}
           {!activeMenu && (
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="mt-4">
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="mt-4"
+            >
               <PiNotePencilBold
                 onClick={createRoom}
-                className="text-2xl text-gray-600 cursor-pointer hover:text-primary dark:text-gray-400"
+                className="cursor-pointer text-2xl text-gray-600 hover:text-primary dark:text-gray-400"
               />
             </motion.div>
           )}
@@ -131,19 +138,21 @@ const Sidebar: React.FC = React.memo(() => {
               className="flex-1 overflow-y-auto p-4"
             >
               {/* 顶部标题区 */}
-              <div className="flex items-center justify-between mb-8">
+              <div className="mb-8 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <span className="font-bold dark:text-gray-200">竭诚为您提供法律服务</span>
+                  <span className="font-bold dark:text-gray-200">
+                    竭诚为您提供法律服务
+                  </span>
                 </div>
                 <PiNotePencilBold
                   onClick={createRoom}
-                  className="text-xl text-gray-600 cursor-pointer hover:text-primary dark:text-gray-400"
+                  className="cursor-pointer text-xl text-gray-600 hover:text-primary dark:text-gray-400"
                 />
               </div>
 
               {/* 聊天室列表 */}
               <div className="space-y-2">
-                {rooms.map(room => (
+                {rooms.map((room) => (
                   <Room
                     key={uniqueKeyUtil.nextKey()}
                     title={room.title}
@@ -159,15 +168,15 @@ const Sidebar: React.FC = React.memo(() => {
                 <motion.div
                   initial={{ y: 20 }}
                   animate={{ y: 0 }}
-                  className="mt-8 p-4 bg-gray-50 rounded-lg dark:bg-gray-700"
+                  className="mt-8 rounded-lg bg-gray-50 p-4 dark:bg-gray-700"
                 >
                   <p className="text-sm font-medium dark:text-gray-200">
                     登录后同步聊天记录
                   </p>
-                  <div className="flex gap-2 mt-4">
+                  <div className="mt-4 flex gap-2">
                     <Button
                       onClick={() => router.push('/register')}
-                      className="flex-1 bg-primary hover:bg-primary/90"
+                      className="hover:bg-primary/90 flex-1 bg-primary"
                     >
                       注册
                     </Button>
@@ -187,12 +196,12 @@ const Sidebar: React.FC = React.memo(() => {
 
         {/* 展开模式下侧边栏底部新增两个带图标的按钮 */}
         {activeMenu && (
-          <div className="p-4 border-t dark:border-gray-700 flex gap-2">
-            <Button className="flex-1 flex items-center justify-center gap-2 p-2">
+          <div className="flex gap-2 border-t p-4 dark:border-gray-700">
+            <Button className="flex flex-1 items-center justify-center gap-2 p-2">
               <FaUser className="text-lg" />
               <span>个人信息</span>
             </Button>
-            <Button className="flex-1 flex items-center justify-center gap-2 p-2">
+            <Button className="flex flex-1 items-center justify-center gap-2 p-2">
               <FaUsers className="text-lg" />
               <span>社区</span>
             </Button>
@@ -201,7 +210,7 @@ const Sidebar: React.FC = React.memo(() => {
 
         {/* 迷你模式底部区域 */}
         {!activeMenu && (
-          <div className="mt-auto p-2 border-t dark:border-gray-700">
+          <div className="mt-auto border-t p-2 dark:border-gray-700">
             {/* 可以添加其他迷你模式图标 */}
           </div>
         )}
