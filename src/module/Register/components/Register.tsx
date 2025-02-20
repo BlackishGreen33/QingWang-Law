@@ -7,10 +7,8 @@ import React, { useState } from 'react';
 
 import AuthInput from '@/common/components/auth/AuthInput';
 import { Button } from '@/common/components/ui/button';
-import { toast, useToast } from '@/common/components/ui/use-toast';
 import { ToastAction } from '@/common/components/ui/toast';
-
-
+import { useToast } from '@/common/components/ui/use-toast';
 
 const Register: React.FC = React.memo(() => {
   const router = useRouter();
@@ -27,7 +25,7 @@ const Register: React.FC = React.memo(() => {
   // 发送验证码请求
   const sendCode = async () => {
     if (isCooldown) return; // 如果在冷却状态，直接返回
-  
+
     try {
       const res = await axios.post(
         'http://localhost:6006/send_code',
@@ -37,17 +35,17 @@ const Register: React.FC = React.memo(() => {
         },
         { headers: { 'Content-Type': 'application/json' } }
       );
-  
+
       if (res.status === 200) {
         toast({
           title: '验证码已发送',
           description: '请检查您的邮箱',
         });
-  
+
         // 启动倒计时
         setIsCooldown(true);
         setCountdown(60);
-  
+
         const timer = setInterval(() => {
           setCountdown((prev) => {
             if (prev === 1) {
@@ -67,7 +65,6 @@ const Register: React.FC = React.memo(() => {
       });
     }
   };
-  
 
   const handleRegister = async () => {
     try {
@@ -95,9 +92,9 @@ const Register: React.FC = React.memo(() => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 shadow rounded p-8 max-w-md w-full">
-        <h1 className="text-2xl font-bold mb-6 text-center">注册</h1>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="w-full max-w-md rounded bg-white p-8 shadow dark:bg-gray-800">
+        <h1 className="mb-6 text-center text-2xl font-bold">注册</h1>
         <div className="space-y-4">
           <AuthInput
             name="电子邮件地址"
@@ -107,7 +104,7 @@ const Register: React.FC = React.memo(() => {
               setRegisterForm({ ...registerForm, email: e.target.value })
             }
           />
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center gap-2">
             <AuthInput
               name="验证码"
               type="text"

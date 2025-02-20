@@ -7,8 +7,8 @@ import React, { useState } from 'react';
 
 import AuthInput from '@/common/components/auth/AuthInput';
 import { Button } from '@/common/components/ui/button';
-import { useToast } from '@/common/components/ui/use-toast';
 import { ToastAction } from '@/common/components/ui/toast';
+import { useToast } from '@/common/components/ui/use-toast';
 
 const Login: React.FC = React.memo(() => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const Login: React.FC = React.memo(() => {
   // 发送验证码请求，用于验证码登录
   const sendCode = async () => {
     if (isCooldown) return; // 如果在冷却状态，直接返回
-  
+
     try {
       const res = await axios.post(
         'http://localhost:6006/send_code',
@@ -36,17 +36,17 @@ const Login: React.FC = React.memo(() => {
         },
         { headers: { 'Content-Type': 'application/json' } }
       );
-  
+
       if (res.status === 200) {
         toast({
           title: '验证码已发送',
           description: '请检查您的邮箱',
         });
-  
+
         // 启动倒计时
         setIsCooldown(true);
         setCountdown(60);
-  
+
         const timer = setInterval(() => {
           setCountdown((prev) => {
             if (prev === 1) {
@@ -69,17 +69,15 @@ const Login: React.FC = React.memo(() => {
 
   const handleLogin = async () => {
     try {
-      let payload: any = { email: loginForm.email };
+      const payload: any = { email: loginForm.email };
       if (loginMode === 'password') {
         payload.password = loginForm.password;
       } else {
         payload.code = loginForm.code;
       }
-      const res = await axios.post(
-        'http://localhost:6006/login',
-        payload,
-        { headers: { 'Content-Type': 'application/json' } }
-      );
+      const res = await axios.post('http://localhost:6006/login', payload, {
+        headers: { 'Content-Type': 'application/json' },
+      });
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
         router.push('/');
@@ -95,13 +93,13 @@ const Login: React.FC = React.memo(() => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 shadow rounded p-8 max-w-md w-full">
-        <h1 className="text-2xl font-bold mb-6 text-center">欢迎回来</h1>
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="w-full max-w-md rounded bg-white p-8 shadow dark:bg-gray-800">
+        <h1 className="mb-6 text-center text-2xl font-bold">欢迎回来</h1>
         {/* 登录方式切换 */}
-        <div className="flex justify-center mb-4">
+        <div className="mb-4 flex justify-center">
           <button
-            className={`px-4 py-2 rounded-l focus:outline-none ${
+            className={`rounded-l px-4 py-2 focus:outline-none ${
               loginMode === 'password'
                 ? 'bg-primary text-white'
                 : 'bg-gray-200 text-gray-800'
@@ -111,7 +109,7 @@ const Login: React.FC = React.memo(() => {
             账号密码登录
           </button>
           <button
-            className={`px-4 py-2 rounded-r focus:outline-none ${
+            className={`rounded-r px-4 py-2 focus:outline-none ${
               loginMode === 'code'
                 ? 'bg-primary text-white'
                 : 'bg-gray-200 text-gray-800'
@@ -141,7 +139,7 @@ const Login: React.FC = React.memo(() => {
             />
           )}
           {loginMode === 'code' && (
-            <div className="flex gap-2 items-center">
+            <div className="flex items-center gap-2">
               <AuthInput
                 name="验证码"
                 type="text"

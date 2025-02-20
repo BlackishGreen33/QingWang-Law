@@ -1,21 +1,21 @@
 'use client';
 
-import React, { useCallback, useEffect, useState, useRef } from 'react';
-import { BsArrowUpSquareFill } from 'react-icons/bs';
-import { FaChevronDown } from 'react-icons/fa';
-import { io, Socket } from 'socket.io-client';
 import axios from 'axios';
 import Link from 'next/link';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { BsArrowUpSquareFill } from 'react-icons/bs';
+import { io, Socket } from 'socket.io-client';
+
 import { Input } from '@/common/components/ui/input';
 import { cn } from '@/common/utils/utils';
-import Record from './Record';
 
+import Record from './Record';
 
 type Message = {
   message: string;
   isMe: boolean;
-  mission?: string;  // 可选的 mission 字段
-  id?: string;       // 添加 id 字段
+  mission?: string; // 可选的 mission 字段
+  id?: string; // 添加 id 字段
 };
 
 interface ChatProps {
@@ -24,11 +24,11 @@ interface ChatProps {
 
 const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [question, setQuestion] = useState<string>(''); 
+  const [question, setQuestion] = useState<string>('');
   const [selectedOption, setSelectedOption] = useState<string>('法律咨询');
   const [socket, setSocket] = useState<Socket | null>(null);
   const [streamedMessage, setStreamedMessage] = useState<string>('');
-  const [isStreaming, setIsStreaming] = useState<boolean>(false); 
+  const [isStreaming, setIsStreaming] = useState<boolean>(false);
   const numberRef = useRef<number>(1);
   const [isModelEnhanced, setIsModelEnhanced] = useState<boolean>(false);
   const [thinkingMessage, setThinkingMessage] = useState<string | null>(null);
@@ -52,7 +52,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
 
     socketInstance.on('chat', (data: string) => {
       const parsedData = JSON.parse(data);
-      
+
       setIsStreaming(true);
 
       numberRef.current = 1;
@@ -61,20 +61,20 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
         return; // 如果当前消息编号小于或等于已处理的编号，则忽略
       }
       numberRef.current = parsedData.num; // 更新已处理编号
-    
+
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages];
-    
+
         // 初始化时显示“正在思考...”占位符
         if (parsedData.num === 1) {
           if (
             updatedMessages.length === 0 ||
             updatedMessages[updatedMessages.length - 1]?.isMe !== false
           ) {
-            updatedMessages.push({ message: "正在思考...", isMe: false });
+            updatedMessages.push({ message: '正在思考...', isMe: false });
           }
         }
-    
+
         // 拼接或更新流式输出
         if (parsedData.isfinished === 0) {
           const lastMessage = updatedMessages[updatedMessages.length - 1];
@@ -82,16 +82,19 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
             lastMessage.message = parsedData.text;
           }
         }
-    
+
         // 如果完成，删除“正在思考...”占位符
         if (parsedData.isfinished === 1) {
           setIsStreaming(false);
           const lastMessage = updatedMessages[updatedMessages.length - 1];
-          if (lastMessage?.message.includes("正在思考...")) {
-            lastMessage.message = lastMessage.message.replace("正在思考...", "");
+          if (lastMessage?.message.includes('正在思考...')) {
+            lastMessage.message = lastMessage.message.replace(
+              '正在思考...',
+              ''
+            );
           }
         }
-    
+
         return updatedMessages;
       });
     });
@@ -118,30 +121,33 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
         const data = fetchMessages.data.messages.map(
           (message: { content: string | string[]; role: string }) => {
             let formattedMessage = message.content;
-  
+
             // 如果是类案检索或法条检索的返回
             if (message.role === '类案检索' || message.role === '法条检索') {
               // 如果搜索结果为空，返回“无检索结果”
-              if (Array.isArray(formattedMessage) && formattedMessage.length === 0) {
+              if (
+                Array.isArray(formattedMessage) &&
+                formattedMessage.length === 0
+              ) {
                 formattedMessage = '无检索结果';
               }
-  
+
               // 将检索结果作为模型消息处理
               return {
                 message: formattedMessage,
-                isMe: false,  // 设置为模型消息
+                isMe: false, // 设置为模型消息
                 mission: message.role, // 保存检索任务类型
               };
             }
-  
+
             // 如果是其他角色的消息（'user' 或 'model'）
             return {
               message: formattedMessage,
-              isMe: message.role === 'user',  // 如果是用户消息，则是我发的消息
+              isMe: message.role === 'user', // 如果是用户消息，则是我发的消息
             };
           }
         );
-  
+
         // 如果不是流式消息，更新消息状态
         if (!isStreaming) {
           setMessages(data);
@@ -157,25 +163,32 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
     },
     [chat_id, token]
   );
-  
 
   const sentQuestion = async () => {
     try {
       const input = question;
       setQuestion(''); // 清空输入框
-  
+
       // 生成唯一 ID
       const thinkingMessageId = `${Date.now()}_${Math.random()}`;
-  
+
       // 发送用户消息
-      setMessages((prevMessages) => [...prevMessages, { message: input, isMe: true }]);
-  
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { message: input, isMe: true },
+      ]);
+
       // 添加“正在思考...”占位符
       setMessages((prevMessages) => [
         ...prevMessages,
-        { message: '正在思考...', isMe: false, id: thinkingMessageId, mission: selectedOption }
+        {
+          message: '正在思考...',
+          isMe: false,
+          id: thinkingMessageId,
+          mission: selectedOption,
+        },
       ]);
-  
+
       if (selectedOption === '判决预测' || selectedOption === '法律咨询') {
         // 判决预测通过 Socket.IO 处理
         await axios.post(
@@ -185,13 +198,13 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
         );
         setIsStreaming(true);
       }
-  
+
       if (selectedOption === '类案检索' || selectedOption === '法条检索') {
         let top_k;
-        if (selectedOption === '类案检索'){
+        if (selectedOption === '类案检索') {
           top_k = 3;
         }
-        if (selectedOption === '法条检索'){
+        if (selectedOption === '法条检索') {
           top_k = 5;
         }
         const response = await axios.post(
@@ -205,30 +218,33 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
           { headers: { Authorization: token as string } }
         );
         const { searchresult, status } = response.data;
-  
+
         if (status === 'success') {
-            // 更新为类案检索的结果
-            
-            setMessages((prevMessages) => {
-              const updatedMessages = [...prevMessages];
-              // 初始化时显示“正在思考...”占位符
-              if (
-                updatedMessages.length === 0 ||
-                updatedMessages[updatedMessages.length - 1]?.isMe !== false
-              ) {
-                updatedMessages.push({ message: "正在思考...", isMe: false, mission: selectedOption });
-              }
-        
-              const lastMessage = updatedMessages[updatedMessages.length - 1];
-              if (lastMessage?.isMe === false) {
-                lastMessage.message = searchresult;
-              }
-        
-        
+          // 更新为类案检索的结果
+
+          setMessages((prevMessages) => {
+            const updatedMessages = [...prevMessages];
+            // 初始化时显示“正在思考...”占位符
+            if (
+              updatedMessages.length === 0 ||
+              updatedMessages[updatedMessages.length - 1]?.isMe !== false
+            ) {
+              updatedMessages.push({
+                message: '正在思考...',
+                isMe: false,
+                mission: selectedOption,
+              });
+            }
+
+            const lastMessage = updatedMessages[updatedMessages.length - 1];
+            if (lastMessage?.isMe === false) {
+              lastMessage.message = searchresult;
+            }
+
             return updatedMessages;
-            });
-          }
+          });
         }
+      }
     } catch (error) {
       console.error('Error sending question:', error);
     } finally {
@@ -242,31 +258,31 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
 
     return () => {
       if (socket) {
-        socket.disconnect(); 
+        socket.disconnect();
       }
     };
   }, [getMessages, initSocket]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      sentQuestion(); 
+      sentQuestion();
     }
   };
-  
+
   return (
     <>
-      <div className="ml-8 mt-4 flex items-center gap-1 text-lg">
-
-      </div>
+      <div className="ml-8 mt-4 flex items-center gap-1 text-lg"></div>
 
       {/* 选项按钮 */}
-      <div className="flex justify-center gap-4 mt-4">
+      <div className="mt-4 flex justify-center gap-4">
         {['法律咨询', '法条检索', '类案检索', '判决预测'].map((option) => (
           <button
             key={option}
             className={cn(
-              'px-4 py-2 rounded-full text-sm font-semibold',
-              option === selectedOption ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700'
+              'rounded-full px-4 py-2 text-sm font-semibold',
+              option === selectedOption
+                ? 'bg-primary text-white'
+                : 'bg-gray-200 text-gray-700'
             )}
             onClick={() => setSelectedOption(option)}
           >
@@ -276,7 +292,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
       </div>
 
       {['类案检索', '法条检索'].includes(selectedOption) && (
-        <div className="flex items-center gap-2 mt-4">
+        <div className="mt-4 flex items-center gap-2">
           <input
             type="checkbox"
             id="model-enhance"
@@ -285,7 +301,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
             onChange={() => setIsModelEnhanced((prev) => !prev)}
           />
           <label htmlFor="model-enhance" className="text-sm text-gray-700">
-          是否使用模型增强搜索
+            是否使用模型增强搜索
           </label>
         </div>
       )}
@@ -296,9 +312,9 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
             isStreaming && streamedMessage
               ? [...messages, { message: streamedMessage, isMe: false }]
               : messages
-            }
-            thinkingMessage={thinkingMessage}
-      />
+          }
+          thinkingMessage={thinkingMessage}
+        />
       </section>
       <div className="flex flex-col items-center gap-2">
         <div className="flex w-[98%] md:w-780">
@@ -307,20 +323,27 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
             placeholder={`给"LAW"发送消息`}
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            onKeyDown={handleKeyDown} 
+            onKeyDown={handleKeyDown}
           />
           <div className="flex h-14 items-center rounded-2xl rounded-l-none border-[1.5px] border-l-0 border-gray-300 pr-4 outline-none">
             <BsArrowUpSquareFill
-              className={cn('text-3xl text-gray-300', { 'text-gray-500': question })}
+              className={cn('text-3xl text-gray-300', {
+                'text-gray-500': question,
+              })}
               onClick={sentQuestion}
             />
           </div>
         </div>
         <p className="text-sm text-gray-500">
           向LAW发送消息即表示，您同意我们的
-          <Link href="#" className="font-semibold text-black underline">条款</Link>
+          <Link href="#" className="font-semibold text-black underline">
+            条款
+          </Link>
           并已阅读我们的
-          <Link href="#" className="font-semibold text-black underline">隐私政策</Link>。
+          <Link href="#" className="font-semibold text-black underline">
+            隐私政策
+          </Link>
+          。
         </p>
       </div>
     </>
