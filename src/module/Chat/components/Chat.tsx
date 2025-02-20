@@ -107,7 +107,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
     });
 
     setSocket(socketInstance);
-  }, [token, streamedMessage]);
+  }, [token]);
 
   // 获取历史消息
   const getMessages = useCallback(
@@ -262,6 +262,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
         socket.disconnect();
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getMessages, initSocket]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -308,7 +309,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
       )}
 
       <section className="flex h-[85vh] w-full flex-col items-center justify-center gap-4">
-        <ScrollArea className='pr-14'>
+        <ScrollArea className="pr-14">
           <Record
             messages={
               isStreaming && streamedMessage
@@ -338,11 +339,11 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
           </div>
         </div>
         <p className="text-sm text-gray-500">
-          向LAW发送消息即表示，您同意我们的
+          向 LAW 发送消息即表示，您同意我们的{' '}
           <Link href="#" className="font-semibold text-black underline">
             条款
-          </Link>
-          并已阅读我们的
+          </Link>{' '}
+          并已阅读我们的{' '}
           <Link href="#" className="font-semibold text-black underline">
             隐私政策
           </Link>
