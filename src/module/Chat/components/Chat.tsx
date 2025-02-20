@@ -9,6 +9,7 @@ import { io, Socket } from 'socket.io-client';
 import { Input } from '@/common/components/ui/input';
 import { cn } from '@/common/utils/utils';
 
+import { ScrollArea } from '@/common/components/ui/scrollarea';
 import Record from './Record';
 
 type Message = {
@@ -306,15 +307,17 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
         </div>
       )}
 
-      <section className="flex h-[85vh] w-full flex-col items-center justify-center gap-4 overflow-y-scroll scrollbar-hide">
-        <Record
-          messages={
-            isStreaming && streamedMessage
-              ? [...messages, { message: streamedMessage, isMe: false }]
-              : messages
-          }
-          thinkingMessage={thinkingMessage}
-        />
+      <section className="flex h-[85vh] w-full flex-col items-center justify-center gap-4">
+        <ScrollArea className='pr-14'>
+          <Record
+            messages={
+              isStreaming && streamedMessage
+                ? [...messages, { message: streamedMessage, isMe: false }]
+                : messages
+            }
+            thinkingMessage={thinkingMessage}
+          />
+        </ScrollArea>
       </section>
       <div className="flex flex-col items-center gap-2">
         <div className="flex w-[98%] md:w-780">
