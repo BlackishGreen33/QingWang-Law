@@ -1,46 +1,41 @@
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useCallback } from 'react';
-
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import useStore from '@/common/hooks/useStore';
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '../ui/tooltip';
 
 const MenuActiver: React.FC = React.memo(() => {
   const { activeMenu, setActiveMenu } = useStore();
 
-  const handleActiveMenu = useCallback(
+  const handleToggle = useCallback(
     () => setActiveMenu(!activeMenu),
     [activeMenu, setActiveMenu]
   );
 
   return (
-    <div className="flex h-dvh items-center px-2">
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-expect-error
-              type="button"
-              onClick={handleActiveMenu}
-              className="relative rounded-full text-xl text-gray-500 hover:bg-light-gray"
-            >
-              |
-            </motion.button>
-          </TooltipTrigger>
-          <TooltipContent side="right" className="bg-black text-white">
-            <p>{activeMenu ? '关闭侧边栏' : '打开侧边栏'}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    </div>
+    <AnimatePresence>
+      {/* 始终渲染按钮，通过动画控制显示 */}
+      <motion.button
+        key="sidebar-toggle"
+        initial={{ x: activeMenu ? 0 : -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        exit={{ x: -20, opacity: 0 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={handleToggle}
+        className={`
+          fixed top-4 z-50 flex h-10 w-10 items-center justify-center
+          rounded-full bg-white shadow-2xl ring-1 ring-gray-200
+          hover:bg-gray-50 dark:bg-gray-800 dark:ring-gray-600
+          ${activeMenu ? 'left-[260px]' : 'left-4'} // 根据侧边栏实际宽度调整
+        `}
+      >
+        {activeMenu ? (
+          <PanelLeftClose className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+        ) : (
+          <PanelLeftOpen className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+        )}
+      </motion.button>
+    </AnimatePresence>
   );
 });
 
