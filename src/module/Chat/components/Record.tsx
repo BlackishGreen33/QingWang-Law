@@ -2,9 +2,7 @@ import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-
 import '@/common/styles/markdown.scss';
-
 import uniqueKeyUtil from '@/common/utils/keyGen';
 import { cn } from '@/common/utils/utils';
 
@@ -38,6 +36,29 @@ const Record: React.FC<ChatProps> = React.memo(({ messages, thinkingMessage }) =
     }
   }, [messages, thinkingMessage]);
 
+  // 词表和解释表
+  const vocabulary = {
+    "权利": "权利是指法律赋予个人或团体的合法权益。",
+    "权力": "权力是指国家机关或公职人员依法行使的公共职权。"
+  };
+
+  // 处理文本，标红词表中的词汇并添加气泡提示
+  const processText = (text: string) => {
+    return text.split(' ').map((word, index) => {
+      if (word in vocabulary) {
+        return (
+          <span key={index} className="text-red-500 relative group">
+            {word}
+            <span className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded px-2 py-1 mt-2">
+              {vocabulary[word as keyof typeof vocabulary]}
+            </span>
+          </span>
+        );
+      }
+      return word + ' ';
+    });
+  };
+
   return (
     <>
       <div id="markdown" className="flex h-full w-[98%] flex-col gap-4 overflow-y-auto md:w-780">
@@ -49,7 +70,7 @@ const Record: React.FC<ChatProps> = React.memo(({ messages, thinkingMessage }) =
             {item.isMe ? (
               // 用户的消息
               <p className="w-fit max-w-4/5 bg-gray-200 text-black rounded-xl px-4 py-2 whitespace-pre-wrap">
-                {item.message}
+                {processText(item.message as string)}
               </p>
             ) : item.mission === '类案检索' || item.mission === '法条检索' ? (
               // 检索结果放入蓝色气泡中
@@ -61,7 +82,7 @@ const Record: React.FC<ChatProps> = React.memo(({ messages, thinkingMessage }) =
                   width={50}
                   height={50}
                 />
-                <div className="bg-blue-500 text-black rounded-xl px-4 py-2 w-full whitespace-pre-wrap">
+                <div className="bg-gray-200 text-black rounded-xl px-4 py-2 w-full whitespace-pre-wrap">
                   {Array.isArray(item.message) ? (
                     item.message.length === 0 ? (
                       // 如果检索结果数组为空，显示‘无检索结果’
@@ -101,17 +122,14 @@ const Record: React.FC<ChatProps> = React.memo(({ messages, thinkingMessage }) =
               <div className="flex w-4/5 gap-4">
                 <Image
                   className="h-8 w-8 rounded-full border-2 border-gray-300"
-                  src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png"
+                  src="/model_logo.png"
                   alt="青望_LAW"
                   width={50}
                   height={50}
                 />
-                <Markdown
-                  remarkPlugins={[remarkGfm]}
-                  className="bg-blue-500 text-black rounded-xl px-4 py-2 w-full whitespace-pre-wrap"
-                >
-                  {typeof item.message === 'string' ? item.message : JSON.stringify(item.message)}
-                </Markdown>
+                <div className="bg-gray-200 text-black rounded-xl px-4 py-2 w-full whitespace-pre-wrap">
+                  {typeof item.message === 'string' ? processText(item.message) : JSON.stringify(item.message)}
+                </div>
               </div>
             )}
           </div>
@@ -125,8 +143,8 @@ const Record: React.FC<ChatProps> = React.memo(({ messages, thinkingMessage }) =
               width={50}
               height={50}
             />
-            <div className="bg-blue-500 text-black rounded-xl px-4 py-2 w-full">
-              {thinkingMessage}
+            <div className="bg-gray-200 text-black rounded-xl px-4 py-2 w-full">
+              {processText(thinkingMessage)}
             </div>
           </div>
         )}

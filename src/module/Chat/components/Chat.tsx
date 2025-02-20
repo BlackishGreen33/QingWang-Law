@@ -10,6 +10,7 @@ import { Input } from '@/common/components/ui/input';
 import { cn } from '@/common/utils/utils';
 import Record from './Record';
 
+
 type Message = {
   message: string;
   isMe: boolean;
@@ -255,9 +256,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
   return (
     <>
       <div className="ml-8 mt-4 flex items-center gap-1 text-lg">
-        <p className="font-bold">LAW</p>
-        <p className="font-bold text-gray-500">智能法律助手</p>
-        <FaChevronDown className="text-gray-300" />
+
       </div>
 
       {/* 选项按钮 */}
@@ -267,7 +266,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
             key={option}
             className={cn(
               'px-4 py-2 rounded-full text-sm font-semibold',
-              option === selectedOption ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'
+              option === selectedOption ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700'
             )}
             onClick={() => setSelectedOption(option)}
           >
