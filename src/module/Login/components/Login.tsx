@@ -13,19 +13,21 @@ import { useToast } from '@/common/components/ui/use-toast';
 const Login: React.FC = React.memo(() => {
   const router = useRouter();
   const { toast } = useToast();
-  const [isCooldown, setIsCooldown] = useState(false);
-  const [countdown, setCountdown] = useState(60); // 60 秒倒计时
-  // loginMode 为 'password' 或 'code'
+  const [isCooldown, setIsCooldown] = useState<boolean>(false);
+  const [countdown, setCountdown] = useState<number>(60);
   const [loginMode, setLoginMode] = useState<'password' | 'code'>('password');
-  const [loginForm, setLoginForm] = useState({
+  const [loginForm, setLoginForm] = useState<{
+    email: string;
+    password: string;
+    code: string;
+  }>({
     email: '',
     password: '',
     code: '',
   });
 
-  // 发送验证码请求，用于验证码登录
   const sendCode = async () => {
-    if (isCooldown) return; // 如果在冷却状态，直接返回
+    if (isCooldown) return;
 
     try {
       const res = await axios.post(
@@ -43,7 +45,6 @@ const Login: React.FC = React.memo(() => {
           description: '请检查您的邮箱',
         });
 
-        // 启动倒计时
         setIsCooldown(true);
         setCountdown(60);
 
@@ -52,7 +53,7 @@ const Login: React.FC = React.memo(() => {
             if (prev === 1) {
               clearInterval(timer);
               setIsCooldown(false);
-              return 60; // 复位倒计时
+              return 60;
             }
             return prev - 1;
           });
@@ -96,7 +97,6 @@ const Login: React.FC = React.memo(() => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md rounded bg-white p-8 shadow dark:bg-gray-800">
         <h1 className="mb-6 text-center text-2xl font-bold">欢迎回来</h1>
-        {/* 登录方式切换 */}
         <div className="mb-4 flex justify-center">
           <button
             className={`rounded-l px-4 py-2 focus:outline-none ${

@@ -10,7 +10,7 @@ interface AuthInputProps {
 const AuthInput: React.FC<AuthInputProps> = React.memo(
   ({ name, type, value, onChange }) => {
     return (
-      <div className="relative mt-6 w-80">
+      <div className="relative w-full">
         <input
           type={type}
           id="small_outlined"
