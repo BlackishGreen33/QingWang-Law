@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { FaRegLightbulb } from 'react-icons/fa';
 import { HiAcademicCap } from 'react-icons/hi2';
 import { PiAirplaneTakeoffBold } from 'react-icons/pi';

@@ -96,7 +96,9 @@ const Login: React.FC = React.memo(() => {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md rounded bg-white p-8 shadow dark:bg-gray-800">
-        <h1 className="mb-6 text-center text-2xl font-bold">欢迎回来</h1>
+        <h1 className="mb-6 text-center text-2xl font-bold dark:text-white">
+          欢迎回来
+        </h1>
         <div className="mb-4 flex justify-center">
           <button
             className={`rounded-l px-4 py-2 focus:outline-none ${
