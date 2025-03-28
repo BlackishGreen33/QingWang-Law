@@ -197,11 +197,11 @@ const Sidebar: React.FC = React.memo(() => {
         {/* 展开模式下侧边栏底部新增两个带图标的按钮 */}
         {activeMenu && (
           <div className="flex gap-2 border-t p-4 dark:border-gray-700">
-            <Button className="flex flex-1 items-center justify-center gap-2 p-2">
+            <Button className="flex flex-1 items-center justify-center gap-2 p-2 dark:text-white">
               <FaUser className="text-lg" />
               <span>个人信息</span>
             </Button>
-            <Button className="flex flex-1 items-center justify-center gap-2 p-2">
+            <Button className="flex flex-1 items-center justify-center gap-2 p-2 dark:text-white">
               <FaUsers className="text-lg" />
               <span>社区</span>
             </Button>

@@ -1,7 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion';
-import React, { useCallback } from 'react';
-import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 import useStore from '@/common/hooks/useStore';
+import { AnimatePresence, motion } from 'framer-motion';
+import { PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import React, { useCallback } from 'react';
 
 const MenuActiver: React.FC = React.memo(() => {
   const { activeMenu, setActiveMenu } = useStore();
@@ -22,12 +22,7 @@ const MenuActiver: React.FC = React.memo(() => {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={handleToggle}
-        className={`
-          fixed top-4 z-50 flex h-10 w-10 items-center justify-center
-          rounded-full bg-white shadow-2xl ring-1 ring-gray-200
-          hover:bg-gray-50 dark:bg-gray-800 dark:ring-gray-600
-          ${activeMenu ? 'left-[260px]' : 'left-4'} // 根据侧边栏实际宽度调整
-        `}
+        className={`fixed top-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-2xl ring-1 ring-gray-200 hover:bg-gray-50 dark:bg-gray-800 dark:ring-gray-600 ${activeMenu ? 'left-[260px]' : 'left-4'} // 根据侧边栏实际宽度调整`}
       >
         {activeMenu ? (
           <PanelLeftClose className="h-5 w-5 text-gray-600 dark:text-gray-300" />

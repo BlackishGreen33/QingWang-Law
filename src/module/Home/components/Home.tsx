@@ -5,9 +5,9 @@ import * as React from 'react';
 import { BsArrowUpSquareFill } from 'react-icons/bs';
 import { FaChevronDown } from 'react-icons/fa';
 
+import ModeToggle from '@/common/components/elements/ModeToggle';
 import { Input } from '@/common/components/ui/input';
 
-import ModeToggle from '@/common/components/elements/ModeToggle';
 import Chat from './Chat';
 import Recommend from './Recommend';
 
@@ -28,7 +28,7 @@ const Home: React.FC = React.memo(() => {
 
   return (
     <>
-      <div className="ml-8 mt-4 flex items-center gap-1 text-lg">
+      <div className="ml-16 mt-4 flex items-center gap-1 text-lg">
         <p className="font-bold">LAW</p>
         <p className="font-bold text-gray-500">智能法律助手</p>
         <FaChevronDown className="text-gray-300" />

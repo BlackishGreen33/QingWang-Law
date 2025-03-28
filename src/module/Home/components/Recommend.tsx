@@ -38,7 +38,7 @@ const Recommend_Messages: RecommendMessage[] = [
 ];
 
 const RecommendCard: React.FC<RecommendCardProps> = React.memo((card) => (
-  <div className="flex cursor-pointer flex-col gap-1 rounded-2xl border-2 border-gray-300 p-4 shadow-md hover:bg-gray-100">
+  <div className="flex cursor-pointer flex-col gap-1 rounded-2xl border-2 border-gray-300 p-4 shadow-md hover:bg-gray-100 dark:shadow-gray-700 dark:hover:bg-gray-900">
     {card.icon}
     {card.message}
   </div>

@@ -260,7 +260,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
         socket.disconnect();
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [getMessages, initSocket]);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -271,7 +271,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
 
   return (
     <>
-      <div className="ml-8 mt-4 flex items-center gap-1 text-lg"></div>
+      <div className="ml-16 mt-4 flex items-center gap-1 text-lg"></div>
 
       {/* 选项按钮 */}
       <div className="mt-4 flex justify-center gap-4">
