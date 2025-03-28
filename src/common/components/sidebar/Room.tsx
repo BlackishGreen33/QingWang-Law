@@ -3,6 +3,9 @@ import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+
 interface RoomProps {
   title: string;
   chat_id: string;
@@ -84,96 +87,91 @@ const Room: React.FC<RoomProps> = React.memo(
     };
 
     return (
-      <div className="group relative flex items-center justify-between rounded-lg px-4 py-2 hover:bg-gray-200">
-        {/* 链接到聊天房间 */}
-        <Link href={`/chat/${chat_id}`}>
+      <Link href={`/chat/${chat_id}`}>
+        <div className="group relative flex items-center justify-between rounded-lg px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+          {/* 链接到聊天房间 */}
+
           <p>{title}</p>
-        </Link>
 
-        {/* BsThreeDots和选项框的容器 */}
-        <div className="relative" ref={optionsRef}>
-          <BsThreeDots
-            className="cursor-pointer"
-            onClick={handleThreeDotsClick}
-          />
+          {/* BsThreeDots和选项框的容器 */}
+          <div className="relative" ref={optionsRef}>
+            <BsThreeDots
+              className="cursor-pointer"
+              onClick={handleThreeDotsClick}
+            />
 
-          {/* 选项框 */}
-          {showOptions && (
-            <div className="absolute right-0 z-10 mt-2 w-40 border border-gray-200 bg-white shadow-lg">
-              <button
-                className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                onClick={() => {
-                  setShowRenameModal(true);
-                  setShowOptions(false); // 点击重命名按钮后关闭选项框
-                }}
-              >
-                重命名
-              </button>
-              <button
-                className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                onClick={() => {
-                  setShowDeleteModal(true);
-                  setShowOptions(false); // 点击删除按钮后关闭选项框
-                }}
-              >
-                删除
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* 删除聊天确认弹窗 */}
-        {showDeleteModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-            <div className="rounded bg-white p-6 shadow-lg">
-              <p>确定要删除此聊天吗？</p>
-              <div className="mt-4 flex justify-end">
+            {/* 选项框 */}
+            {showOptions && (
+              <div className="absolute right-0 z-10 mt-2 w-40 rounded-lg bg-white shadow-lg dark:bg-gray-700">
                 <button
-                  className="mr-2 rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                  onClick={() => setShowDeleteModal(false)}
+                  className="block w-full rounded-t-lg px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600"
+                  onClick={() => {
+                    setShowRenameModal(true);
+                    setShowOptions(false); // 点击重命名按钮后关闭选项框
+                  }}
                 >
-                  取消
+                  重命名
                 </button>
                 <button
-                  className="rounded bg-red-500 px-4 py-2 text-white hover:bg-red-600"
-                  onClick={deleteChat}
+                  className="block w-full rounded-b-lg px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-600"
+                  onClick={() => {
+                    setShowDeleteModal(true);
+                    setShowOptions(false); // 点击删除按钮后关闭选项框
+                  }}
                 >
                   删除
                 </button>
               </div>
-            </div>
+            )}
           </div>
-        )}
 
-        {/* 重命名聊天弹窗 */}
-        {showRenameModal && (
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
-            <div className="rounded bg-white p-6 shadow-lg">
-              <p>输入新聊天名：</p>
-              <input
-                type="text"
-                value={newTitle}
-                onChange={(e) => setNewTitle(e.target.value)}
-                className="mt-2 w-full rounded border p-2"
-              />
-              <div className="mt-4 flex justify-end">
-                <button
-                  className="mr-2 rounded bg-gray-200 px-4 py-2 hover:bg-gray-300"
-                  onClick={() => setShowRenameModal(false)}
-                >
-                  取消
-                </button>
-                <button
-                  className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                  onClick={renameChat}
-                >
-                  重命名
-                </button>
+          {/* 删除聊天确认弹窗 */}
+          {showDeleteModal && (
+            <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-500 bg-opacity-75">
+              <div className="flex flex-col gap-2 rounded-xl bg-gray-100 p-6 shadow-lg dark:bg-gray-700">
+                <p>确定要删除此聊天吗？</p>
+                <div className="mt-4 flex justify-end gap-2">
+                  <Button
+                    className="bg-gray-500 text-white"
+                    onClick={() => setShowDeleteModal(false)}
+                  >
+                    取消
+                  </Button>
+                  <Button className="text-white" onClick={deleteChat}>
+                    删除
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+
+          {/* 重命名聊天弹窗 */}
+          {showRenameModal && (
+            <div className="fixed inset-0 z-10 flex items-center justify-center bg-gray-500 bg-opacity-75">
+              <div className="flex flex-col gap-2 rounded-xl bg-gray-100 p-6 shadow-lg dark:bg-gray-700">
+                <p>输入新聊天名：</p>
+                <Input
+                  type="text"
+                  value={newTitle}
+                  onChange={(e) => setNewTitle(e.target.value)}
+                  className="w-72 border border-black p-2 dark:border-white"
+                />
+                <div className="mt-4 flex justify-end gap-2">
+                  <Button
+                    className="bg-gray-500 text-white"
+                    onClick={() => setShowRenameModal(false)}
+                  >
+                    取消
+                  </Button>
+                  <Button className="text-white" onClick={renameChat}>
+                    重命名
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      </Link>
     );
   }
 );

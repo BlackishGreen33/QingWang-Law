@@ -1,3 +1,5 @@
+/* eslint-disable simple-import-sort/imports */
+import { useTheme } from 'next-themes';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import Markdown from 'react-markdown';
@@ -28,6 +30,7 @@ interface ChatProps {
 const Record: React.FC<ChatProps> = React.memo(
   ({ messages, thinkingMessage }) => {
     const [modalContent, setModalContent] = useState<string | null>(null);
+    const { theme } = useTheme();
 
     const handleLinkClick = (content: string) => {
       setModalContent(content); // 设置弹窗内容
@@ -152,7 +155,7 @@ const Record: React.FC<ChatProps> = React.memo(
                 <div className="flex w-4/5 gap-4">
                   <Image
                     className="h-8 w-8 rounded-full border-2 border-gray-300"
-                    src="/model_logo.png"
+                    src={`/modal_logo${theme === 'dark' && '_dark'}.png`}
                     alt="青望_LAW"
                     width={50}
                     height={50}

@@ -49,11 +49,17 @@ const Home: React.FC = React.memo(() => {
         </div>
         <p className="text-sm text-gray-500">
           向 LAW 发送消息即表示，您同意我们的{' '}
-          <Link href="#" className="font-semibold text-black underline">
+          <Link
+            href="#"
+            className="font-semibold text-black underline dark:text-white"
+          >
             条款
           </Link>{' '}
           并已阅读我们的{' '}
-          <Link href="#" className="font-semibold text-black underline">
+          <Link
+            href="#"
+            className="font-semibold text-black underline dark:text-white"
+          >
             隐私政策
           </Link>
           。

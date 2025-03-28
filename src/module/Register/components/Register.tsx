@@ -116,7 +116,11 @@ const Register: React.FC = React.memo(() => {
                 setRegisterForm({ ...registerForm, code: e.target.value })
               }
             />
-            <Button className="h-10" onClick={sendCode} disabled={isCooldown}>
+            <Button
+              className="h-10 dark:text-white"
+              onClick={sendCode}
+              disabled={isCooldown}
+            >
               {isCooldown ? `${countdown} 秒后重试` : '发送验证码'}
             </Button>
           </div>
@@ -141,7 +145,7 @@ const Register: React.FC = React.memo(() => {
           />
         </div>
         <Button
-          className="text-md mt-6 h-14 w-full bg-primary hover:bg-lightprimary"
+          className="text-md mt-6 h-14 w-full bg-primary hover:bg-lightprimary dark:text-white"
           onClick={handleRegister}
         >
           注册
