@@ -12,11 +12,7 @@ const Page: NextPage<PageProps> = async (props) => {
 
   const { chat_id } = params;
 
-  return (
-    <>
-      <Chat chat_id={chat_id} />
-    </>
-  );
+  return <Chat chat_id={chat_id} />;
 };
 
 export default Page;
