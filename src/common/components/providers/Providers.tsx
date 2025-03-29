@@ -1,4 +1,3 @@
-// import { type ThemeProviderProps } from "next-themes/dist/types";
 import * as React from 'react';
 
 // import ProgressBar from '@/common/components/elements/ProgressBar';

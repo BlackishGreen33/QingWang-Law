@@ -3,7 +3,7 @@
 import axios, { AxiosError } from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import React, { useEffect } from 'react';
+import * as React from 'react';
 import { FaUser, FaUsers } from 'react-icons/fa';
 import { PiNotePencilBold } from 'react-icons/pi';
 
@@ -20,7 +20,6 @@ import { cn } from '@/common/utils/utils';
 
 import Room from './Room';
 
-// 定义聊天室类型
 type Room = {
   title: string;
   chat_id: string;
@@ -30,10 +29,8 @@ const Sidebar: React.FC = React.memo(() => {
   const router = useRouter();
   const { activeMenu } = useStore();
 
-  // 聊天室列表状态
   const [rooms, setRooms] = React.useState<Room[]>([]);
 
-  // 获取本地存储的 token
   let token = '';
   if (typeof window !== 'undefined') {
     token = localStorage.getItem('token')!;
@@ -57,7 +54,7 @@ const Sidebar: React.FC = React.memo(() => {
   };
 
   // 获取聊天室列表
-  useEffect(() => {
+  React.useEffect(() => {
     const getChatrooms = async () => {
       try {
         const response = await axios.get('http://127.0.0.1:6006/chat/list', {

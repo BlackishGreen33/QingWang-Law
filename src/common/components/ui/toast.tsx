@@ -116,6 +116,7 @@ type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 
 type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
+// eslint-disable-next-line simple-import-sort/exports
 export {
   Toast,
   ToastAction,

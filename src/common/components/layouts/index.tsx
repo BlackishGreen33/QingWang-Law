@@ -5,7 +5,7 @@ import { useMediaQuery } from '@react-hook/media-query';
 import { motion } from 'framer-motion';
 import { useTheme } from 'next-themes';
 import { usePathname } from 'next/navigation';
-import React, { useCallback } from 'react';
+import * as React from 'react';
 import { CiCircleQuestion } from 'react-icons/ci';
 
 import useStore from '@/common/hooks/useStore';
@@ -25,52 +25,49 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
   const { resolvedTheme, setTheme } = useTheme();
   setTheme(resolvedTheme!);
 
-  const handleCloseMenu = useCallback(
+  const isLoginOrRegister = pathname === '/login' || pathname === '/register';
+
+  const handleCloseMenu = React.useCallback(
     () => setActiveMenu(false),
     [setActiveMenu]
   );
 
   return (
     <>
-      {!(pathname === '/login') &&
-        !(pathname === '/register') &&
-        activeMenu && (
-          <div className="relative flex">
-            {!isMDScreen && (
-              <div
-                className="fixed h-full w-full bg-gray-500 opacity-50"
-                onClick={handleCloseMenu}
-              ></div>
-            )}
-            <motion.div
-              className={`z-[10] ${activeMenu && 'fixed w-64 bg-bgDefault'}`}
-              animate={{
-                x: activeMenu ? 0 : -100,
-                opacity: activeMenu ? 1 : 0,
-                transition: {
-                  duration: 0.5,
-                  delay: 0.1,
-                  type: 'tween',
-                  stiffness: 200,
-                },
-              }}
-            >
-              <Sidebar />
-            </motion.div>
-          </div>
-        )}
+      {!isLoginOrRegister && activeMenu && (
+        <div className="relative flex">
+          {!isMDScreen && (
+            <div
+              className="fixed h-full w-full bg-gray-500 opacity-50"
+              onClick={handleCloseMenu}
+            ></div>
+          )}
+          <motion.div
+            className={`z-[10] ${activeMenu && 'fixed w-64 bg-bgDefault'}`}
+            animate={{
+              x: activeMenu ? 0 : -100,
+              opacity: activeMenu ? 1 : 0,
+              transition: {
+                duration: 0.5,
+                delay: 0.1,
+                type: 'tween',
+                stiffness: 200,
+              },
+            }}
+          >
+            <Sidebar />
+          </motion.div>
+        </div>
+      )}
       <motion.div
         className={
-          !(pathname === '/login') && !(pathname === '/register') && activeMenu
+          !isLoginOrRegister && activeMenu
             ? 'min-h-screen w-full md:pl-72'
             : 'flex-2 min-h-screen w-full'
         }
         animate={{
           padding:
-            !(pathname === '/login') &&
-            !(pathname === '/register') &&
-            activeMenu &&
-            isMDScreen
+            !isLoginOrRegister && activeMenu && isMDScreen
               ? '0 0 0 256px'
               : '0',
           transition: {
@@ -80,12 +77,8 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
           },
         }}
       >
-        <div
-          className={`flex h-dvh ${pathname === '/login' && 'bg-bgDefault'} ${pathname === '/register' && 'bg-bgDefault'}`}
-        >
-          {!(pathname === '/login') && !(pathname === '/register') && (
-            <MenuActiver />
-          )}
+        <div className={`flex h-dvh ${isLoginOrRegister && 'bg-bgDefault'}`}>
+          {!isLoginOrRegister && <MenuActiver />}
           <main className="flex flex-1 flex-col transition-all duration-300">
             {children}
           </main>
