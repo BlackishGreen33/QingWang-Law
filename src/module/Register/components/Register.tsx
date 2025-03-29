@@ -9,18 +9,15 @@ import AuthInput from '@/common/components/auth/AuthInput';
 import { Button } from '@/common/components/ui/button';
 import { ToastAction } from '@/common/components/ui/toast';
 import { useToast } from '@/common/components/ui/use-toast';
+import { API_PORT, API_URL } from '@/common/constants';
+import { RegisterForm } from '@/common/types/auth';
 
 const Register: React.FC = React.memo(() => {
   const router = useRouter();
   const { toast } = useToast();
   const [isCooldown, setIsCooldown] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(60);
-  const [registerForm, setRegisterForm] = useState<{
-    email: string;
-    code: string;
-    password: string;
-    confirmPassword: string;
-  }>({
+  const [registerForm, setRegisterForm] = useState<RegisterForm>({
     email: '',
     code: '',
     password: '',
@@ -32,7 +29,7 @@ const Register: React.FC = React.memo(() => {
 
     try {
       const res = await axios.post(
-        'http://localhost:6006/send_code',
+        `${API_URL}:${API_PORT}/send_code`,
         {
           email: registerForm.email,
           type: 'register',
@@ -72,7 +69,7 @@ const Register: React.FC = React.memo(() => {
   const handleRegister = async () => {
     try {
       const res = await axios.post(
-        'http://localhost:6006/register',
+        `${API_URL}:${API_PORT}/register`,
         {
           email: registerForm.email,
           code: registerForm.code,

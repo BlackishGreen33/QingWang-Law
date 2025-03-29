@@ -8,6 +8,7 @@ import { io, Socket } from 'socket.io-client';
 
 import { Input } from '@/common/components/ui/input';
 import { ScrollArea } from '@/common/components/ui/scrollarea';
+import { API_PORT, API_URL } from '@/common/constants';
 import { cn } from '@/common/utils/utils';
 
 import Record from './Record';
@@ -114,7 +115,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
     async (isStreaming?: boolean) => {
       try {
         const fetchMessages = await axios.get(
-          `http://127.0.0.1:6006/chat/${chat_id}?chat_id=${chat_id}`,
+          `${API_URL}:${API_PORT}/chat/${chat_id}?chat_id=${chat_id}`,
           {
             headers: { Authorization: token as string },
           }
@@ -191,7 +192,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
       if (selectedOption === '判决预测' || selectedOption === '法律咨询') {
         // 判决预测通过 Socket.IO 处理
         await axios.post(
-          `http://127.0.0.1:6006/chat/stream/${chat_id}`,
+          `${API_URL}:${API_PORT}/chat/stream/${chat_id}`,
           { inputs: input, mission: selectedOption },
           { headers: { Authorization: token as string } }
         );
@@ -207,7 +208,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
           top_k = 5;
         }
         const response = await axios.post(
-          `http://127.0.0.1:6006/chat/stream/${chat_id}/search`,
+          `${API_URL}:${API_PORT}/chat/stream/${chat_id}/search`,
           {
             inputs: input,
             mission: selectedOption,

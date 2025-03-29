@@ -9,6 +9,8 @@ import AuthInput from '@/common/components/auth/AuthInput';
 import { Button } from '@/common/components/ui/button';
 import { ToastAction } from '@/common/components/ui/toast';
 import { useToast } from '@/common/components/ui/use-toast';
+import { API_PORT, API_URL } from '@/common/constants';
+import { LoginForm } from '@/common/types/auth';
 
 const Login: React.FC = React.memo(() => {
   const router = useRouter();
@@ -16,22 +18,23 @@ const Login: React.FC = React.memo(() => {
   const [isCooldown, setIsCooldown] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(60);
   const [loginMode, setLoginMode] = useState<'password' | 'code'>('password');
-  const [loginForm, setLoginForm] = useState<{
-    email: string;
-    password: string;
-    code: string;
-  }>({
+  const [loginForm, setLoginForm] = useState<LoginForm>({
     email: '',
     password: '',
     code: '',
   });
+  const [isLoading, setIsLoading] = useState(false);
 
-  const sendCode = async () => {
-    if (isCooldown) return;
+  const sendVerifyCode = async () => {
+    if (isCooldown || !/^\S+@\S+\.\S+$/.test(loginForm.email)) {
+      toast({ title: '请输入有效的邮箱地址' });
+      return;
+    }
 
     try {
+      setIsLoading(true);
       const res = await axios.post(
-        'http://localhost:6006/send_code',
+        `${API_URL}:${API_PORT}/send_code`,
         {
           email: loginForm.email,
           type: 'login',
@@ -65,10 +68,21 @@ const Login: React.FC = React.memo(() => {
         title: '发送验证码失败',
         description: '请检查邮箱格式或重试',
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleLogin = async () => {
+    if (
+      !loginForm.email ||
+      (loginMode === 'password' && !loginForm.password) ||
+      (loginMode === 'code' && !loginForm.code)
+    ) {
+      toast({ title: '请填写所有必填字段' });
+      return;
+    }
+
     try {
       const payload = {
         email: loginForm.email,
@@ -76,7 +90,7 @@ const Login: React.FC = React.memo(() => {
           ? { password: loginForm.password }
           : { code: loginForm.code }),
       };
-      const res = await axios.post('http://localhost:6006/login', payload, {
+      const res = await axios.post(`${API_URL}:${API_PORT}/login`, payload, {
         headers: { 'Content-Type': 'application/json' },
       });
       if (res.status === 200) {
@@ -88,8 +102,14 @@ const Login: React.FC = React.memo(() => {
         variant: 'destructive',
         title: '登录失败',
         description: '请检查您的电子邮件地址及密码/验证码。',
-        action: <ToastAction altText="Try again">重试一次</ToastAction>,
+        action: (
+          <ToastAction altText="Try again" onClick={sendVerifyCode}>
+            重试一次
+          </ToastAction>
+        ),
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -152,7 +172,7 @@ const Login: React.FC = React.memo(() => {
               />
               <Button
                 className="h-10 dark:text-white"
-                onClick={sendCode}
+                onClick={sendVerifyCode}
                 disabled={isCooldown}
               >
                 {isCooldown ? `${countdown} 秒后重试` : '发送验证码'}
@@ -163,8 +183,9 @@ const Login: React.FC = React.memo(() => {
         <Button
           className="text-md mt-6 h-14 w-full bg-primary hover:bg-lightprimary dark:text-white"
           onClick={handleLogin}
+          disabled={isLoading}
         >
-          登录
+          {isLoading ? '登录中...' : '登录'}
         </Button>
         <p className="mt-4 text-center text-sm">
           还没有账户？{' '}

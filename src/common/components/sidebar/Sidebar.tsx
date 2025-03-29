@@ -14,6 +14,7 @@ import {
   AvatarImage,
 } from '@/common/components/ui/avatar';
 import { Button } from '@/common/components/ui/button';
+import { API_PORT, API_URL } from '@/common/constants';
 import useStore from '@/common/hooks/useStore';
 import uniqueKeyUtil from '@/common/utils/keyGen';
 import { cn } from '@/common/utils/utils';
@@ -40,7 +41,7 @@ const Sidebar: React.FC = React.memo(() => {
   const createRoom = async () => {
     try {
       const chatroom = await axios.post(
-        'http://127.0.0.1:6006/chat/new_chat',
+        `${API_URL}:${API_PORT}/chat/new_chat`,
         {},
         { headers: { Authorization: token } }
       );
@@ -57,7 +58,7 @@ const Sidebar: React.FC = React.memo(() => {
   React.useEffect(() => {
     const getChatrooms = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:6006/chat/list', {
+        const response = await axios.get(`${API_URL}:${API_PORT}/chat/list`, {
           headers: { Authorization: token },
         });
         setRooms(response.data.chats);

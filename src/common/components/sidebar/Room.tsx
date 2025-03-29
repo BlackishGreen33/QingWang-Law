@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 
+import { API_PORT, API_URL } from '@/common/constants';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
@@ -46,7 +47,7 @@ const Room: React.FC<RoomProps> = React.memo(
     const deleteChat = async () => {
       try {
         const response = await axios.delete(
-          `http://127.0.0.1:6006/chat/delete/${chat_id}`,
+          `${API_URL}:${API_PORT}/chat/delete/${chat_id}`,
           {
             headers: { Authorization: token },
           }
@@ -70,7 +71,7 @@ const Room: React.FC<RoomProps> = React.memo(
 
       try {
         const response = await axios.post(
-          `http://127.0.0.1:6006/chat/rename/${chat_id}`,
+          `${API_URL}:${API_PORT}/chat/rename/${chat_id}`,
           { title: newTitle },
           { headers: { Authorization: token } }
         );
