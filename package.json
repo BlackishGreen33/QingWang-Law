@@ -28,7 +28,7 @@
     "@radix-ui/react-scroll-area": "^1.2.8",
     "@radix-ui/react-slot": "^1.2.2",
     "@radix-ui/react-toast": "^1.2.13",
-    "@radix-ui/react-tooltip": "^1.2.4",
+    "@radix-ui/react-tooltip": "^1.2.6",
     "@react-hook/media-query": "^1.1.1",
     "axios": "^1.9.0",
     "babel-plugin-react-compiler": "19.0.0-beta-714736e-20250131",
