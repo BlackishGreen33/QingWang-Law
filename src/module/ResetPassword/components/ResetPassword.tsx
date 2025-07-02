@@ -10,17 +10,15 @@ import { Button } from '@/common/components/ui/button';
 import { ToastAction } from '@/common/components/ui/toast';
 import { useToast } from '@/common/components/ui/use-toast';
 import { API_PORT, API_URL } from '@/common/constants';
-import { LoginForm } from '@/common/types/auth';
+import { ResetPasswordForm } from '@/common/types/auth';
 
-const Login: React.FC = React.memo(() => {
+const ForgotPassword: React.FC = React.memo(() => {
   const router = useRouter();
   const { toast } = useToast();
   const [isCooldown, setIsCooldown] = useState<boolean>(false);
   const [countdown, setCountdown] = useState<number>(60);
-  const [loginMode, setLoginMode] = useState<'password' | 'code'>('password');
-  const [loginForm, setLoginForm] = useState<LoginForm>({
+  const [loginForm, setLoginForm] = useState<ResetPasswordForm>({
     email: '',
-    password: '',
     code: '',
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -73,12 +71,8 @@ const Login: React.FC = React.memo(() => {
     }
   };
 
-  const handleLogin = async () => {
-    if (
-      !loginForm.email ||
-      (loginMode === 'password' && !loginForm.password) ||
-      (loginMode === 'code' && !loginForm.code)
-    ) {
+  const handleResetPassword = async () => {
+    if (!loginForm.email || !loginForm.code) {
       toast({ title: '请填写所有必填字段' });
       return;
     }
@@ -86,9 +80,7 @@ const Login: React.FC = React.memo(() => {
     try {
       const payload = {
         email: loginForm.email,
-        ...(loginMode === 'password'
-          ? { password: loginForm.password }
-          : { code: loginForm.code }),
+        code: loginForm.code,
       };
       const res = await axios.post(`${API_URL}:${API_PORT}/login`, payload, {
         headers: { 'Content-Type': 'application/json' },
@@ -117,30 +109,11 @@ const Login: React.FC = React.memo(() => {
     <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
       <div className="w-full max-w-md rounded bg-white p-8 shadow dark:bg-gray-800">
         <h1 className="mb-6 text-center text-2xl font-bold dark:text-white">
-          欢迎回来
+          重置密码
         </h1>
-        <div className="mb-4 flex justify-center">
-          <button
-            className={`rounded-l px-4 py-2 focus:outline-none ${
-              loginMode === 'password'
-                ? 'bg-primary text-white'
-                : 'bg-gray-200 text-gray-800'
-            }`}
-            onClick={() => setLoginMode('password')}
-          >
-            账号密码登录
-          </button>
-          <button
-            className={`rounded-r px-4 py-2 focus:outline-none ${
-              loginMode === 'code'
-                ? 'bg-primary text-white'
-                : 'bg-gray-200 text-gray-800'
-            }`}
-            onClick={() => setLoginMode('code')}
-          >
-            验证码登录
-          </button>
-        </div>
+        <p className="mb-4 text-center">
+          输入您的电子邮件地址以接收验证码或密码重置链接
+        </p>
         <div className="space-y-4">
           <AuthInput
             name="电子邮件地址"
@@ -150,42 +123,30 @@ const Login: React.FC = React.memo(() => {
               setLoginForm({ ...loginForm, email: e.target.value })
             }
           />
-          {loginMode === 'password' && (
+          <div className="flex items-center gap-2">
             <AuthInput
-              name="密码"
-              type="password"
-              value={loginForm.password}
+              name="验证码"
+              type="text"
+              value={loginForm.code}
               onChange={(e) =>
-                setLoginForm({ ...loginForm, password: e.target.value })
+                setLoginForm({ ...loginForm, code: e.target.value })
               }
             />
-          )}
-          {loginMode === 'code' && (
-            <div className="flex items-center gap-2">
-              <AuthInput
-                name="验证码"
-                type="text"
-                value={loginForm.code}
-                onChange={(e) =>
-                  setLoginForm({ ...loginForm, code: e.target.value })
-                }
-              />
-              <Button
-                className="h-10 dark:text-white"
-                onClick={sendVerifyCode}
-                disabled={isCooldown}
-              >
-                {isCooldown ? `${countdown} 秒后重试` : '发送验证码'}
-              </Button>
-            </div>
-          )}
+            <Button
+              className="h-10 dark:text-white"
+              onClick={sendVerifyCode}
+              disabled={isCooldown}
+            >
+              {isCooldown ? `${countdown} 秒后重试` : '发送验证码'}
+            </Button>
+          </div>
         </div>
         <Button
           className="text-md mt-6 h-14 w-full bg-primary hover:bg-lightprimary dark:text-white"
-          onClick={handleLogin}
+          onClick={handleResetPassword}
           disabled={isLoading}
         >
-          {isLoading ? '登录中...' : '登录'}
+          {isLoading ? '重置中...' : '重置'}
         </Button>
         <p className="mt-4 text-center text-sm">
           还没有账户？{' '}
@@ -195,7 +156,7 @@ const Login: React.FC = React.memo(() => {
         </p>
         <p className="mt-4 text-center text-sm">
           忘记密码？{' '}
-          <Link href="/resetpassword" className="text-primary">
+          <Link href="/forgotpassword" className="text-primary">
             重置密码
           </Link>
         </p>
@@ -204,4 +165,4 @@ const Login: React.FC = React.memo(() => {
   );
 });
 
-export default Login;
+export default ForgotPassword;

@@ -25,7 +25,10 @@ const Layout: React.FC<LayoutProps> = React.memo(({ children }) => {
   const { resolvedTheme, setTheme } = useTheme();
   setTheme(resolvedTheme!);
 
-  const isLoginOrRegister = pathname === '/login' || pathname === '/register';
+  const isLoginOrRegister =
+    pathname === '/login' ||
+    pathname === '/register' ||
+    pathname === '/resetpassword';
 
   const handleCloseMenu = React.useCallback(
     () => setActiveMenu(false),

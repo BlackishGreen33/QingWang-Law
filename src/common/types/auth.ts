@@ -10,3 +10,8 @@ export type RegisterForm = {
   password: string;
   confirmPassword: string;
 };
+
+export type ResetPasswordForm = {
+  email: string;
+  code: string;
+};
