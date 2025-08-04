@@ -9,7 +9,7 @@ import AuthInput from '@/common/components/auth/AuthInput';
 import { Button } from '@/common/components/ui/button';
 import { ToastAction } from '@/common/components/ui/toast';
 import { useToast } from '@/common/components/ui/use-toast';
-import { API_PORT, API_URL } from '@/common/constants';
+import { API_URL } from '@/common/constants';
 import { ResetPasswordForm } from '@/common/types/auth';
 
 const ForgotPassword: React.FC = React.memo(() => {
@@ -32,7 +32,7 @@ const ForgotPassword: React.FC = React.memo(() => {
     try {
       setIsLoading(true);
       const res = await axios.post(
-        `${API_URL}:${API_PORT}/send_code`,
+        `${API_URL}/api/send_code`,
         {
           email: loginForm.email,
           type: 'login',
@@ -82,9 +82,13 @@ const ForgotPassword: React.FC = React.memo(() => {
         email: loginForm.email,
         code: loginForm.code,
       };
-      const res = await axios.post(`${API_URL}:${API_PORT}/login`, payload, {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      const res = await axios.post(
+        `${API_URL}/api/login`,
+        payload,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        }
+      );
       if (res.status === 200) {
         localStorage.setItem('token', res.data.token);
         router.push('/');

@@ -9,7 +9,7 @@ import AuthInput from '@/common/components/auth/AuthInput';
 import { Button } from '@/common/components/ui/button';
 import { ToastAction } from '@/common/components/ui/toast';
 import { useToast } from '@/common/components/ui/use-toast';
-import { API_PORT, API_URL } from '@/common/constants';
+import { API_URL } from '@/common/constants';
 import { RegisterForm } from '@/common/types/auth';
 
 const Register: React.FC = React.memo(() => {
@@ -29,7 +29,7 @@ const Register: React.FC = React.memo(() => {
 
     try {
       const res = await axios.post(
-        `${API_URL}:${API_PORT}/send_code`,
+        `${API_URL}/api/send_code`,
         {
           email: registerForm.email,
           type: 'register',
@@ -69,7 +69,7 @@ const Register: React.FC = React.memo(() => {
   const handleRegister = async () => {
     try {
       const res = await axios.post(
-        `${API_URL}:${API_PORT}/register`,
+        `${API_URL}/api/register`,
         {
           email: registerForm.email,
           code: registerForm.code,

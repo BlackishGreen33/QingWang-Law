@@ -155,15 +155,20 @@ const Record: React.FC<ChatProps> = React.memo(
                 <div className="flex w-4/5 gap-4">
                   <Image
                     className="h-8 w-8 rounded-full border-2 border-gray-300"
-                    src={`/modal_logo${theme === 'dark' && '_dark'}.png`}
+                    src={`/modal_logo${theme === 'dark' ? '_dark' : ''}.png`}
                     alt="青望_LAW"
                     width={50}
                     height={50}
                   />
                   <div className="w-full whitespace-pre-wrap rounded-xl bg-gray-200 px-4 py-2 text-black">
-                    {typeof item.message === 'string'
-                      ? processText(item.message)
-                      : JSON.stringify(item.message)}
+                    <Markdown
+                      remarkPlugins={[remarkGfm]}
+                      className="prose max-w-none"
+                    >
+                      {typeof item.message === 'string'
+                        ? item.message
+                        : JSON.stringify(item.message)}
+                    </Markdown>
                   </div>
                 </div>
               )}
@@ -201,7 +206,7 @@ const Record: React.FC<ChatProps> = React.memo(
                   remarkPlugins={[remarkGfm]}
                   className="prose max-w-none"
                 >
-                  {modalContent}
+                  {modalContent + '1111'}
                 </Markdown>
               </div>
             </div>

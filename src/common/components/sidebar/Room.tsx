@@ -1,9 +1,11 @@
 import axios from 'axios';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 
-import { API_PORT, API_URL } from '@/common/constants';
+import { API_URL } from '@/common/constants';
+
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 
@@ -21,6 +23,9 @@ const Room: React.FC<RoomProps> = React.memo(
     const [showRenameModal, setShowRenameModal] = useState(false);
     const [newTitle, setNewTitle] = useState('');
     const token = localStorage.getItem('token') as string;
+
+    const pathname = usePathname();
+    const chatId = pathname.slice('/chat/'.length);
 
     const optionsRef = useRef<HTMLDivElement>(null); // 用于检测点击外部的参考
 
@@ -47,7 +52,7 @@ const Room: React.FC<RoomProps> = React.memo(
     const deleteChat = async () => {
       try {
         const response = await axios.delete(
-          `${API_URL}:${API_PORT}/chat/delete/${chat_id}`,
+          `${API_URL}/api/chat/delete/${chat_id}`,
           {
             headers: { Authorization: token },
           }
@@ -71,7 +76,7 @@ const Room: React.FC<RoomProps> = React.memo(
 
       try {
         const response = await axios.post(
-          `${API_URL}:${API_PORT}/chat/rename/${chat_id}`,
+          `${API_URL}/api/chat/rename/${chat_id}`,
           { title: newTitle },
           { headers: { Authorization: token } }
         );
@@ -89,15 +94,17 @@ const Room: React.FC<RoomProps> = React.memo(
 
     return (
       <Link href={`/chat/${chat_id}`}>
-        <div className="group relative flex items-center justify-between rounded-lg px-4 py-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+        <div
+          className={`group relative flex items-center justify-between rounded-lg px-4 py-2 dark:hover:bg-gray-700 ${chatId === chat_id ? 'bg-primary' : 'hover:bg-gray-200'}`}
+        >
           {/* 链接到聊天房间 */}
 
-          <p>{title}</p>
+          <p className={`${chatId === chat_id && 'text-white'}`}>{title}</p>
 
           {/* BsThreeDots和选项框的容器 */}
           <div className="relative" ref={optionsRef}>
             <BsThreeDots
-              className="cursor-pointer"
+              className={`cursor-pointer ${chatId === chat_id && 'text-white'}`}
               onClick={handleThreeDotsClick}
             />
 

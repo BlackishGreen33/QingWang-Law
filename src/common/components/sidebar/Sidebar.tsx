@@ -2,6 +2,7 @@
 
 import axios, { AxiosError } from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
 import { FaUser, FaUsers } from 'react-icons/fa';
@@ -14,7 +15,7 @@ import {
   AvatarImage,
 } from '@/common/components/ui/avatar';
 import { Button } from '@/common/components/ui/button';
-import { API_PORT, API_URL } from '@/common/constants';
+import { API_URL } from '@/common/constants';
 import useStore from '@/common/hooks/useStore';
 import uniqueKeyUtil from '@/common/utils/keyGen';
 import { cn } from '@/common/utils/utils';
@@ -41,7 +42,7 @@ const Sidebar: React.FC = React.memo(() => {
   const createRoom = async () => {
     try {
       const chatroom = await axios.post(
-        `${API_URL}:${API_PORT}/chat/new_chat`,
+        `${API_URL}/api/chat/new_chat`,
         {},
         { headers: { Authorization: token } }
       );
@@ -58,9 +59,12 @@ const Sidebar: React.FC = React.memo(() => {
   React.useEffect(() => {
     const getChatrooms = async () => {
       try {
-        const response = await axios.get(`${API_URL}:${API_PORT}/chat/list`, {
-          headers: { Authorization: token },
-        });
+        const response = await axios.get(
+          `${API_URL}/api/chat/list`,
+          {
+            headers: { Authorization: token },
+          }
+        );
         setRooms(response.data.chats);
       } catch (error) {
         if ((error as AxiosError).response?.status === 401) {
@@ -102,13 +106,15 @@ const Sidebar: React.FC = React.memo(() => {
             whileHover={{ scale: 1.1 }}
             className="cursor-pointer p-2"
           >
-            <Avatar className="h-10 w-10 border-2 border-primary">
-              <AvatarImage
-                src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png"
-                alt="Logo"
-              />
-              <AvatarFallback>Law</AvatarFallback>
-            </Avatar>
+            <Link href="/">
+              <Avatar className="h-10 w-10 border-2 border-primary">
+                <AvatarImage
+                  src="https://raw.githubusercontent.com/BlackishGreen33/QingWang-Law/main/public/logo.png"
+                  alt="Logo"
+                />
+                <AvatarFallback>Law</AvatarFallback>
+              </Avatar>
+            </Link>
           </motion.div>
 
           {/* 新建按钮（迷你模式） */}

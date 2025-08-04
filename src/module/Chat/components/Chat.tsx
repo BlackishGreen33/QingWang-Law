@@ -6,9 +6,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BsArrowUpSquareFill } from 'react-icons/bs';
 import { io, Socket } from 'socket.io-client';
 
+import ModeToggle from '@/common/components/elements/ModeToggle';
 import { Input } from '@/common/components/ui/input';
 import { ScrollArea } from '@/common/components/ui/scrollarea';
-import { API_PORT, API_URL } from '@/common/constants';
+import { API_URL } from '@/common/constants';
 import { cn } from '@/common/utils/utils';
 
 import Record from './Record';
@@ -42,7 +43,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
 
   // 初始化 Socket 连接
   const initSocket = useCallback(() => {
-    const socketInstance = io('ws://127.0.0.1:6006/chat', {
+    const socketInstance = io('wss://www.model.青望law.cn/api/chat', {
       transports: ['websocket'],
       auth: { token },
       timeout: 5000,
@@ -50,50 +51,45 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
 
     socketInstance.on('connect', () => {
       console.log('Connected to server');
+
+      socketInstance.emit('join', { chat_id });
     });
 
-    socketInstance.on('chat', (data: string) => {
-      const parsedData = JSON.parse(data);
+    socketInstance.on('chat', (data) => {
+      const { text, step, finished, error } = data;
 
-      setIsStreaming(true);
-
-      numberRef.current = 1;
-      // 防止重复处理相同的分段消息
-      if (parsedData.num <= numberRef.current) {
-        return; // 如果当前消息编号小于或等于已处理的编号，则忽略
+      if (error) {
+        console.error('Socket error:', error);
+        return;
       }
-      numberRef.current = parsedData.num; // 更新已处理编号
+
+      setIsStreaming(!finished);
 
       setMessages((prevMessages) => {
         const updatedMessages = [...prevMessages];
 
-        // 初始化时显示“正在思考...”占位符
-        if (parsedData.num === 1) {
-          if (
-            updatedMessages.length === 0 ||
-            updatedMessages[updatedMessages.length - 1]?.isMe !== false
-          ) {
-            updatedMessages.push({ message: '正在思考...', isMe: false });
+        // 若初始添加占位符
+        if (
+          step === 1 &&
+          (!updatedMessages.length ||
+            updatedMessages[updatedMessages.length - 1].isMe)
+        ) {
+          updatedMessages.push({ message: '正在思考...', isMe: false });
+        }
+
+        // 拼接流式消息
+        if (!finished) {
+          const last = updatedMessages[updatedMessages.length - 1];
+          if (last && !last.isMe) {
+            last.message = text;
           }
         }
 
-        // 拼接或更新流式输出
-        if (parsedData.isfinished === 0) {
-          const lastMessage = updatedMessages[updatedMessages.length - 1];
-          if (lastMessage?.isMe === false) {
-            lastMessage.message = parsedData.text;
-          }
-        }
-
-        // 如果完成，删除“正在思考...”占位符
-        if (parsedData.isfinished === 1) {
-          setIsStreaming(false);
-          const lastMessage = updatedMessages[updatedMessages.length - 1];
-          if (lastMessage?.message.includes('正在思考...')) {
-            lastMessage.message = lastMessage.message.replace(
-              '正在思考...',
-              ''
-            );
+        // 若 finished 为 true，更新为最终消息
+        if (finished) {
+          const last = updatedMessages[updatedMessages.length - 1];
+          if (last && !last.isMe) {
+            last.message = text;
           }
         }
 
@@ -102,20 +98,22 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
     });
 
     socketInstance.on('error', (error) => {
-      if (error.status === 401) {
+      if (error?.status === 401) {
         window.location.href = '/login';
+      } else {
+        console.error('Socket connection error:', error);
       }
     });
 
     setSocket(socketInstance);
-  }, [token]);
+  }, [token, chat_id]);
 
   // 获取历史消息
   const getMessages = useCallback(
     async (isStreaming?: boolean) => {
       try {
         const fetchMessages = await axios.get(
-          `${API_URL}:${API_PORT}/chat/${chat_id}?chat_id=${chat_id}`,
+          `${API_URL}/api/chat/${chat_id}?chat_id=${chat_id}`,
           {
             headers: { Authorization: token as string },
           }
@@ -192,7 +190,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
       if (selectedOption === '判决预测' || selectedOption === '法律咨询') {
         // 判决预测通过 Socket.IO 处理
         await axios.post(
-          `${API_URL}:${API_PORT}/chat/stream/${chat_id}`,
+          `${API_URL}/api/chat/stream/${chat_id}`,
           { inputs: input, mission: selectedOption },
           { headers: { Authorization: token as string } }
         );
@@ -208,7 +206,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
           top_k = 5;
         }
         const response = await axios.post(
-          `${API_URL}:${API_PORT}/chat/stream/${chat_id}/search`,
+          `${API_URL}/api/chat/stream/${chat_id}/search`,
           {
             inputs: input,
             mission: selectedOption,
@@ -273,10 +271,12 @@ const Chat: React.FC<ChatProps> = React.memo(({ chat_id }) => {
   return (
     <>
       <div className="ml-16 mt-4 flex items-center gap-1 text-lg"></div>
+      <ModeToggle className="absolute right-2 top-2" />
 
       {/* 选项按钮 */}
       <div className="mt-4 flex justify-center gap-4">
-        {['法律咨询', '法条检索', '类案检索', '判决预测'].map((option) => (
+        {/* {['法律咨询', '法条检索', '类案检索', '判决预测'].map((option) => ( */}
+        {['法律咨询', '判决预测'].map((option) => (
           <button
             key={option}
             className={cn(
