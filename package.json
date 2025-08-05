@@ -52,7 +52,7 @@
     "zustand": "^5.0.6"
   },
   "devDependencies": {
-    "@types/node": "^22",
+    "@types/node": "^24",
     "@types/react": "npm:types-react@19.0.0-rc.1",
     "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "@typescript-eslint/eslint-plugin": "^7.12.0",
