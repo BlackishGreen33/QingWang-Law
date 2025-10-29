@@ -30,7 +30,7 @@
     "@radix-ui/react-toast": "^1.2.15",
     "@radix-ui/react-tooltip": "^1.2.7",
     "@react-hook/media-query": "^1.1.1",
-    "axios": "^1.11.0",
+    "axios": "^1.13.1",
     "babel-plugin-react-compiler": "19.0.0-beta-714736e-20250131",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
