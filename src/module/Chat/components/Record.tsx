@@ -160,11 +160,8 @@ const Record: React.FC<ChatProps> = React.memo(
                     width={50}
                     height={50}
                   />
-                  <div className="w-full whitespace-pre-wrap rounded-xl bg-gray-200 px-4 py-2 text-black">
-                    <Markdown
-                      remarkPlugins={[remarkGfm]}
-                      className="prose max-w-none"
-                    >
+                  <div className="prose w-full max-w-none rounded-xl bg-gray-200 px-4 py-2 whitespace-pre-wrap text-black">
+                    <Markdown remarkPlugins={[remarkGfm]}>
                       {typeof item.message === 'string'
                         ? item.message
                         : JSON.stringify(item.message)}
@@ -193,19 +190,16 @@ const Record: React.FC<ChatProps> = React.memo(
 
         {/* 模态框 */}
         {modalContent && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-black">
             <div className="relative w-11/12 max-w-3xl overflow-hidden rounded-lg bg-white p-6 shadow-lg">
               <button
                 onClick={closeModal}
-                className="absolute right-3 top-3 text-lg font-bold text-red-500 transition-all duration-300 hover:text-red-700"
+                className="absolute top-3 right-3 text-lg font-bold text-red-500 transition-all duration-300 hover:text-red-700"
               >
                 关闭
               </button>
-              <div className="max-h-[70vh] overflow-y-auto border-t border-gray-200 p-4">
-                <Markdown
-                  remarkPlugins={[remarkGfm]}
-                  className="prose max-w-none"
-                >
+              <div className="prose max-h-[70vh] max-w-none overflow-y-auto border-t border-gray-200 p-4">
+                <Markdown remarkPlugins={[remarkGfm]}>
                   {modalContent + '1111'}
                 </Markdown>
               </div>
