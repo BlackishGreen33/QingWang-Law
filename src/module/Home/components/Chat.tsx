@@ -29,7 +29,7 @@ const Chat: React.FC<ChatProps> = React.memo(({ messages }) => (
         className={cn('flex', item.isMe ? 'flex-row-reverse' : 'flex-row')}
       >
         {item.isMe ? (
-          <p className="w-fit max-w-4/5 overflow-x-scroll rounded-l-full rounded-r-full bg-gray-100 px-4 py-2 scrollbar-hide">
+          <p className="scrollbar-hide w-fit max-w-4/5 overflow-x-scroll rounded-l-full rounded-r-full bg-gray-100 px-4 py-2">
             {item.message}
           </p>
         ) : (
@@ -41,9 +41,9 @@ const Chat: React.FC<ChatProps> = React.memo(({ messages }) => (
               />
               <AvatarFallback>青望_LAW</AvatarFallback>
             </Avatar>
-            <Markdown remarkPlugins={[remarkGfm]} className="-mt-2">
-              {item.message}
-            </Markdown>
+            <div className="-mt-2">
+              <Markdown remarkPlugins={[remarkGfm]}>{item.message}</Markdown>
+            </div>
           </div>
         )}
       </div>
