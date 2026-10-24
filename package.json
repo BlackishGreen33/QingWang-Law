@@ -2,6 +2,9 @@
   "name": "qingwang-law",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "24.x"
+  },
   "description": "青望_LAW - 法律大模型",
   "author": "BlackishGreen33 <s5460703@gmail.com>",
   "license": "MIT",
